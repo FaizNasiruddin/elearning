@@ -1,0 +1,94 @@
+:root {
+  --main-color: #bd313d;
+}
+
+*{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.main{
+  display: flex;
+}
+
+/* navbar */
+.navbar{
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  color: var(--main-color);
+  text-align: center;
+}
+
+.navbar a{
+  display: block; 
+  height: 5rem;
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+}
+
+
+.menu-selected{
+  background-color: lightgrey;
+}
+
+.logo-image{
+  width: 3rem;
+}
+
+.subject-image{
+  width: 2.8rem;
+}
+
+.student-image{
+  width: 2.5rem;
+}
+
+.content{
+  /* background-color: gainsboro; */
+  width: 100%;
+  position: relative;
+  height: 100vh;
+  padding: 2rem;
+}
+
+.add{
+    padding: 1rem;
+    background-color: rgb(171, 114, 126);
+    margin-bottom: 1rem;
+    border-radius: 5px;
+}
+
+.add input, .add button, .add p, .add label{
+    margin: 0.3rem;
+}
+
+
+.student-list{
+    border-collapse: collapse;
+      width: 100%;
+      background: #fff;
+}
+
+.student-list th, .student-list td {
+    text-align: left;
+    padding: 12px 16px;
+}
+
+.student-list th {
+    background: #f4f4f4;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #333;
+}
+
+tr:hover {
+    background: #f0f0f0;
+}
+
+td {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+

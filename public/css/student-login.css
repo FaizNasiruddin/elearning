@@ -1,0 +1,140 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+:root {
+    --main-color: #bd313d;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: rgb(83, 83, 83);
+}
+
+.login-container {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 30rem;
+    border-radius: 8px;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+                rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+                background-color: white;
+    padding: 6rem 1.5rem;
+
+}
+
+.logo {
+    flex: 1;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-image {
+    width: 4rem;
+    height: 4rem;
+}
+
+.login {
+    flex: 1;
+    text-align: center;
+    z-index: -1;
+
+}
+
+.login-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 5px;
+}
+
+.login input,
+.login-btn {
+    height: 3rem;
+    font-size: 0.9rem;
+    margin: 1rem 0;
+    width: 90%;
+    padding: 0 0.8rem;
+}
+
+.username-form,
+.password-form {
+    border: none;
+    border-bottom: 3px solid var(--main-color);
+    outline: none;
+}
+
+.login-btn {
+    border-radius: 3px;
+    border: none;
+    background-color: var(--main-color);
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.login-btn:hover {
+    background-color: #a32a34;
+}
+
+.error {
+    color: red;
+    font-size: 0.9rem;
+    margin-top: -0.5rem;
+    margin-bottom: 0.5rem;
+    text-align: left;
+    padding-left: 1rem;
+}
+
+/* Alerts */
+.alert {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  font-family: sans-serif;
+  border-left: 5px solid;
+  font-size: 0.95rem;
+}
+
+.alert-success {
+  color: #155724;
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+  border-left-color: #28a745;
+}
+
+.alert-danger {
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+  border-left-color: #dc3545;
+}
+
+@media (max-width: 800px) {
+    .login-container {
+        flex-direction: column;
+        width: 90%;
+    }
+
+    .logo-image {
+        width: 3rem;
+        height: 3rem;
+    }
+
+    .login-title{
+        font-size: 1.2rem;
+    }
+
+    .login {
+        padding: 3rem 1rem;
+    }
+}

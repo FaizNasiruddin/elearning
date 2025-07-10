@@ -1,0 +1,410 @@
+:root {
+  --main-color: #bd313d;
+  --second-color: color-mix(in srgb, var(--main-color) 40%, white);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+}
+
+button {
+  padding: 10px 5px;
+  border-radius: 6px;
+  transition: all 0.25s ease-in-out;
+  font-weight: 500;
+  border: none;
+  background-color: var(--second-color);
+}
+
+/* navbar */
+.navbar {
+  box-shadow: rgba(0, 0, 0, 1) 0px 3px 8px;
+  text-align: center;
+  position: static;
+  background-color: var(--main-color);
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 20px 0px;
+}
+
+.navbar a.selected div {
+}
+
+.navbar button{
+  width: 100%;
+   background-color: transparent;
+   border: none;
+  height: 5rem;
+}
+
+.navbar button img{
+  width: 1.8rem;
+}
+
+.navbar a {
+  height: 5rem;
+  padding: 0 1rem;
+  text-decoration: none;
+  color: white;
+  font-weight: 600;
+}
+
+.menu-selected {
+  background-color: var(--hover-gray);
+}
+
+.logo-image {
+  width: 3rem;
+}
+
+.subject-image {
+  width: 2.4rem;
+}
+
+.student-image {
+  width: 2.9rem;
+}
+
+/* profile */
+
+.profile{
+  background-color: var(--main-color);
+  width: 100%;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  color: white;
+  padding: 1rem;
+}
+
+
+/* Content */
+.content {
+  width: 100%;
+  position: relative;
+  min-height: 100vh;
+  padding: 2rem;
+  font-family: 'Roboto', sans-serif;
+  background-color: #f4f6f8;
+}
+
+.content div{
+  -webkit-overflow-scrolling: touch;
+}
+
+.contents {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.contents .attendance,
+.contents .file,
+.contents .note {
+  width: 100%;
+  position: relative;
+}
+
+.contents-add {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.3s ease;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.contents-add:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.contents th {
+}
+
+.content .title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #333;
+  border-bottom: 2px solid #e3e3e3;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.date {
+  height: 21px;
+  width: 90px;
+}
+
+/* Sort */
+.sort {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.sort label{
+  color: #555555;
+}
+
+/* Edit / Add Modal */
+.edit,
+.add {
+  padding: 2.5rem 3rem;
+  border-radius: 12px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 30%;
+  background-color: #fff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transform: translate(-50%, -50%);
+}
+
+.edit input[type="text"],
+.add input[type="text"],
+.edit select,
+.add select {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  height: 3rem;
+  font-size: 0.9rem;
+  margin: 1rem 0;
+  width: 100%;
+  padding: 0 0.8rem;
+  background-color: #fdfdfd;
+  transition: border 0.3s ease;
+}
+
+.edit input:focus,
+.add input:focus,
+.edit select:focus,
+.add select:focus {
+  border-color: var(--main-color);
+  outline: none;
+}
+
+.edit button,
+.add button {
+  width: 100%;
+  padding: 0.7rem;
+  font-size: 1rem;
+  border-radius: 3px;
+  border: none;
+  background-color: var(--main-color);
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  height: 3rem;
+}
+
+.add input[type="color"]{
+  height: 3rem;
+}
+
+.edit button:hover,
+.add button:hover {
+  background-color: #9e1f29;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Table */
+
+table {
+  background-color: black;
+  border-collapse: collapse;
+  border-radius: 8px;
+  width: 100%;
+  background: #fff;
+  overflow: hidden;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.buttonCol {
+  justify-content: space-around;
+}
+
+.buttonCol button,
+.buttonCol a {
+  margin: 5px 15px;
+  padding: 5px;
+  border-radius: 3px;
+  border: none;
+  color: white;
+}
+
+.buttonCol a,
+.buttonCol form {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.buttonCol .deletebtn,
+.buttonCol .editbtn {
+  background-size: cover;
+  background-position: center;
+  width: 25px;
+  height: 25px;
+  background-color: white;
+}
+
+.buttonCol .deletebtn {
+  background-image: url('../icon/trash.png');
+}
+
+.buttonCol .editbtn {
+  background-image: url('../icon/edit.png');
+}
+
+.buttonCol .deletebtn:hover,
+.buttonCol .editbtn:hover {
+  filter: brightness(0.9);
+  transform: scale(1.1);
+}
+
+.buttonCol .viewbtn {
+  background-color: rgb(128, 128, 128);
+}
+
+th,
+td {
+  text-align: left;
+   padding: 8px;
+  position: relative;
+}
+
+tr{
+
+}
+
+th {
+  background: #f4f4f4;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #333;
+  
+}
+
+tr:hover {
+  background: #f0f0f0;
+  transition: background-color 0.2s ease;
+}
+
+td {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.last-column{
+  float: right;
+   vertical-align: middle;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  body {
+    flex-direction: column;
+  }
+
+  .content {
+    padding: 1rem;
+    height: auto;
+  }
+
+  .add {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .add input,
+  .add button,
+  .add label,
+  .add select {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+
+  body,
+  td,
+  th,
+  .content,
+  .sort label,
+  .title {
+    font-size: 0.85rem; /* or around 13.6px */
+    
+  }
+
+  table td,
+  table th {
+    padding: 8px 10px;
+  }
+
+  button {
+    font-size: 0.9rem;
+  }
+
+  .content .title {
+    font-size: 1.2rem;
+  }
+
+  table tr {
+    margin-bottom: 1rem;
+  }
+
+  td {
+    padding: 0.5rem;
+  }
+
+  .edit {
+    width: 90%;
+    padding: 1rem;
+  }
+
+  .navbar {
+    display: flex;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .logo-image,
+  .subject-image,
+  .student-image {
+    transform: scale(0.7);
+    transform-origin: center;
+  }
+}
+
+/* Alerts */
+.alert {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  font-family: sans-serif;
+  border-left: 5px solid;
+  font-size: 0.95rem;
+}
+
+.alert-success {
+  color: #155724;
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+  border-left-color: #28a745;
+}
+
+.alert-danger {
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+  border-left-color: #dc3545;
+}
+
+
+
