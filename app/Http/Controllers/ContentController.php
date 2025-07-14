@@ -25,7 +25,7 @@ class ContentController extends Controller
         }
         $subject = Subjects::findOrFail($subject_id);
 
-        $files = SubjectFiles::where('subjects_id', $subject_id)->get();
+        $files = SubjectFiles::where('subject_id', $subject_id)->get();
         $attendances = Attendance::where('subject_id', $subject_id)->get();
         $quizzes = Quizzes::where('subject_id', $subject_id)->get();
 
@@ -39,7 +39,7 @@ class ContentController extends Controller
         }
         $subject = Subjects::findOrFail($subject_id);
 
-        $files = SubjectFiles::where('subjects_id', $subject_id)->get();
+        $files = SubjectFiles::where('subject_id', $subject_id)->get();
         $attendances = Attendance::where('subject_id', $subject_id)->get();
         $quizzes = Quizzes::where('subject_id', $subject_id)->get();
 
@@ -60,7 +60,7 @@ class ContentController extends Controller
         $file = $request->file('file');
 
         SubjectFiles::create([
-            'subjects_id' => $request->input('id'),  // get subject ID from hidden input
+            'subject_id' => $request->input('id'),  // get subject ID from hidden input
             'filename' => $file->getClientOriginalName(),
             'filetype' => $file->getClientMimeType(),
             'filesize' => $file->getSize(),
@@ -196,7 +196,7 @@ public function addAttendance(Request $request)
         $student = session('user');
         $subject = Subjects::findOrFail($subject_id);
 
-        $files = SubjectFiles::where('subjects_id', $subject_id)->get();
+        $files = SubjectFiles::where('subject_id', $subject_id)->get();
         $attendances = Attendance::where('subject_id', $subject_id)->get();
         $quizzes = Quizzes::where('subject_id', $subject_id)->get();
 
