@@ -1,30 +1,21 @@
 <!-- 🟦 NAVBAR -->
 <div class="navbar">
-    <a href="/student-subject" class="logo">
-        <img class="logo-image" src="{{ asset('icon/logo.png') }}" alt="Logo">
-    </a>
+    {{-- Logo --}}
+    <div class="section1">
+        <a href="/student-subject" class="logo">
+            <img class="logo-image" src="{{ asset('icon/logo.png') }}" alt="Logo">
+        </a>
+    </div>
     <br>
-    <form action="/logout" method="POST" onsubmit="return confirm('Are you sure you to logout');">
-        @csrf
-        <button type="submit">
-            <img class="logo-image" src="{{ asset('icon/out.png') }}" alt="Logo">
-        </button>
-    </form>
-    <!-- <br>
-    <a href="/student-profile">
-        <div>
-            <img class="student-image" src="{{ asset('icon/student-red.png') }}" alt="Student">
-            <p>Student</p>
-        </div>
-    </a>
-    <br>
-    <a href="/student-subject">
-        <div>
-            <img class="subject-image" src="{{ asset('icon/book-red.png') }}" alt="Subject">
-            <p>Subject</p>
-        </div>
-    </a>
-    <br> -->
+  {{-- Logout --}}
+    <div class="section2">
+        <form action="/logout" method="POST" onsubmit="return confirm('Are you sure you want to logout?');">
+            @csrf
+            <button type="submit" class="logout-button">
+                <img class="subject-image" src="{{ asset('icon/out.png') }}" alt="Logout">
+            </button>
+        </form>
+    </div>
 </div>
 
 <!-- In your <head> tag -->

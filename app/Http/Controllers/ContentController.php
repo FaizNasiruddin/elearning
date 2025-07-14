@@ -48,8 +48,8 @@ class ContentController extends Controller
 
     public function uploadFile(Request $request)
     {
-        if (!session()->has('user') || session('role') !== 'admin') {
-           return redirect('/admin-login')->with('error', 'Access denied. Please login.');
+        if (!session()->has('user') || !in_array(session('role'), ['admin', 'teacher'])) {
+    return redirect('/admin-login')->with('error', 'Access denied. Please login.');
         }
         // Validate file and ensure 'id' (subject ID) exists in subjects table
         $request->validate([
@@ -68,7 +68,7 @@ class ContentController extends Controller
             'uploaded_at' => now(),
         ]);
 
-        return redirect()->back()->with('success', 'File uploaded successfully!');
+        return redirect()->back()->with('success2', 'File uploaded successfully!');
     }
 
     public function deleteFile(Request $request){
@@ -79,14 +79,15 @@ class ContentController extends Controller
         $file = SubjectFiles::findOrFail($request->file_id);
         $file->delete();
 
-        return redirect()->back()->with('success', 'File Delete successfully!');
+        return redirect()->back()->with('success2', 'File Delete successfully!');
     }
 
     public function viewFile($id)
     {
-        if (!session()->has('user') || session('role') !== 'admin') {
-            return redirect('/admin-login')->with('error', 'Access denied. Please login.');
-        }
+       if (!session()->has('user') || !in_array(session('role'), ['admin', 'teacher','student'])) {
+    return redirect('/admin-login')->with('error', 'Access denied. Please login.');
+}
+
         $file = SubjectFiles::findOrFail($id);
 
         return response($file->filedata)
@@ -97,9 +98,9 @@ class ContentController extends Controller
 
 public function addAttendance(Request $request)
 {
-    if (!session()->has('user') || session('role') !== 'admin') {
-            return redirect('/admin-login')->with('error', 'Access denied. Please login.');
-        }
+    if (!session()->has('user') || !in_array(session('role'), ['admin', 'teacher'])) {
+    return redirect('/admin-login')->with('error', 'Access denied. Please login.');
+}
     $validated = $request->validate([
         'subject_id'   => 'required|exists:subjects,id',
         'start_date'   => 'required|date', // Changed from date_format:d/m/Y
@@ -121,7 +122,7 @@ public function addAttendance(Request $request)
         'password'    => $password,
     ]);
 
-    return redirect()->back()->with('success', 'Attendance created successfully!');
+    return redirect()->back()->with('success1', 'Attendance created successfully!');
 }
 
 
@@ -134,7 +135,7 @@ public function addAttendance(Request $request)
         $attendance = Attendance::findOrFail($request->attendance_id);
         $attendance->delete();
 
-        return redirect()->back()->with('success', 'atttendance deleted successfully.');
+        return redirect()->back()->with('success1', 'atttendance deleted successfully.');
     }
 
     public function showStudentAttendance($attendance_id, $subject_id)
@@ -264,17 +265,26 @@ public function addAttendance(Request $request)
         return redirect()->back()->with('success', 'Attendance marked successfully!');
     }
 
-    public function showStudentContent()
-    {
-    // ✅ Block access if not logged in as admin
-        if (!session()->has('user') || !in_array(session('role'), ['admin', 'teacher'])) {
-            return redirect('/')->with('error', 'Access denied. Please login.');
-        }
-        $attendances = Attendance::with('subject')->get(); // Load all attendances with their related subject
-        $quizzes = Quizzes::with('subject')->get();        // Load all quizzes with their related subject
-
-        return view('admin-content', compact('attendances', 'quizzes'));
+    public function showStudentContent(Request $request)
+{
+    if (!session()->has('user') || !in_array(session('role'), ['admin', 'teacher'])) {
+        return redirect('/')->with('error', 'Access denied. Please login.');
     }
+
+    $sort = $request->query('sort', 'latest'); // default to latest if not specified
+
+    if ($sort === 'oldest') {
+        $attendances = Attendance::with('subject')->orderBy('start_time', 'asc')->get();
+        $quizzes = Quizzes::with('subject')->orderBy('created_at', 'asc')->get();
+    } else {
+        // default to latest
+        $attendances = Attendance::with('subject')->orderBy('start_time', 'desc')->get();
+        $quizzes = Quizzes::with('subject')->orderBy('created_at', 'desc')->get();
+    }
+
+    return view('admin-content', compact('attendances', 'quizzes'));
+}
+
 
     public function showTeacherContent()
     {

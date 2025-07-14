@@ -7,9 +7,10 @@
     <link rel="stylesheet" href="{{ asset('css/all.css') }}">
 </head>
 <body>
-
+    
     @include('navbar-admin')
-    <div class="edit">
+    <div class="content">
+ <div class="add">
         <form action="/updateStudent" method="POST">
             @csrf
             <input type="hidden" name="student_id" value="{{ $student->id }}">
@@ -28,9 +29,19 @@
                 <option value="5" {{ $student->form == 5 ? 'selected' : '' }}>Form 5</option>
             </select>
             <br>
-            <button>Update Subject</button>
+            <button>Update Student</button>
         </form>
+        @if ($errors->any())
+        <br>
+        <div class="alert alert-danger">
+                @foreach ($errors->all() as $error)
+                   <p>{{ $error }}</p>
+                @endforeach
+        </div>
+        @endif
     </div>
+    </div>
+   
     
 </body>
 </html>

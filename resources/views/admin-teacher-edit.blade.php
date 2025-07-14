@@ -9,15 +9,29 @@
 <body>
 
     @include('navbar-admin')
-    <div class="edit">
+    <div class="content">
+      <div class="add">
         <form action="/updateTeacher" method="POST">
             @csrf
             <input type="hidden" name="teacher_id" value="{{ $teacher->id }}">
-            <input type="text" name="teacher_name" value="{{ $teacher->fullname }}">
+            <input type="text" placeholder="Full Name" name="teacher_name" value="{{ $teacher->fullname }}">
+            <input type="text" placeholder="IC Number" name="teacher_username" value="{{ $teacher->username }}">
+            <input type="text" placeholder="Password" name="teacher_password" value="{{ $teacher->password }}">
             <br>
-            <button>Update Subject</button>
+            <button>Update Teacher</button>
         </form>
+        <br>
+        @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                {{ $error }}
+                <br>
+            @endforeach
+        </ul>
     </div>
-    
+@endif
+    </div>
+    </div>
 </body>
 </html>

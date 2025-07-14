@@ -10,7 +10,8 @@
 
     @include('navbar-admin')
 
-    <div class="add">
+    <div class="content">
+<div class="add">
         <form action="/student-enroll" method="POST">
             @csrf
             <input name="subject_id" type="hidden" value="{{ $subject->id }}">
@@ -18,17 +19,17 @@
             <select name="student_id">
                 <option value="" disabled selected>Select Student</option>
                 @foreach($students as $student)
-                    <option value="{{ $student->id }}">{{ $student->fullname }}</option>
+                    <option value="{{ $student->id }}">{{ $student->fullname }} ({{$student->username}})</option>
                 @endforeach
             </select>
 
             @error('student_id')
-                <div class="error" style="color: red;">{{ $message }}</div><br>
+                <div class="alert alert-danger" style="color: red;">{{ $message }}</div>
             @enderror
 
             <button>Enroll Student</button>
         </form>
     </div>
-
+    </div>
 </body>
 </html>

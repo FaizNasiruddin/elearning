@@ -4,19 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Subject List</title>
-    <link rel="stylesheet" href="{{ asset('css/student-subject.css') }}">
     <link rel="stylesheet" href="{{ asset('css/all.css') }}">
 </head>
 <body>
     @include('navbar')
 
     <div class="content">
+        <div class="welcome">
+                <div>Selamat Datang! {{ $student->fullname}}</div>
+        </div>
         <div class="subject-list">
             @foreach ($subjects as $subject)
                 @php
                     $textColor = strtolower($subject->color) === '#ffffff' ? 'black' : 'white';
                 @endphp
-
                 <div 
                     class="subject-card" 
                     style="background-color: {{ $subject->color }}; color: {{ $textColor }}; cursor: pointer;" 

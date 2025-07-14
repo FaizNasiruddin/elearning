@@ -78,7 +78,7 @@
           <table>
             <thead>
               <tr>
-                <th colspan="2" style="text-align:center;">Note</th>
+                <th colspan="2" style="text-align:center;">Learning Material</th>
               </tr>
             </thead>
             <tbody>
@@ -112,7 +112,16 @@
           <table>
             <thead>
               <tr>
-                <th colspan="3" style="text-align:center;">Quiz</th>
+                <th colspan="3" style="text-align:center;">
+                  Quiz
+                  <br>
+                  <br>
+                    @if (session('success'))
+                    <p class="alert alert-success">
+                        {{ session('success') }}
+                    </p>
+                @endif
+</th>
               </tr>
             </thead>
             <tbody>

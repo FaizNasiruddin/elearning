@@ -3,13 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ asset('css/all.css') }}">
     <title>Subject Content</title>
-    <style>
-        .hidden {
-            display: none;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('css/all.css') }}">
 </head>
 <body>
     @if(session('role') === 'teacher')
@@ -23,12 +18,12 @@
 
         <div class="sort">
             <div>
-                <button onclick="showTable('attendance')">Attendances</button>
-                <button onclick="showTable('quiz')">Quizzes</button>
+                <button type="button" onclick="showTable('attendance')">Attendances</button>
+                <button type="button" onclick="showTable('quiz')">Quizzes</button>
             </div>
 
             <div>
-                <form method="GET" action="/admin-subject" style="margin-bottom: 10px;">
+                <form method="GET" action="/admin-content" style="margin-bottom: 10px;">
                     <label for="sort">Sort by:</label>
                     <select name="sort" id="sort" onchange="this.form.submit()">
                         <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>Latest (Newest First)</option>
@@ -46,17 +41,15 @@
                 <thead>
                     <tr>
                         <th>Subject</th>
-                        <th>ID</th>
                         <th>Start</th>
                         <th>End</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($attendances as $attendance)
+                    @forelse($attendances as $attendance)
                         <tr>
                             <td>{{ $attendance->subject->name ?? 'No Subject' }}</td>
-                            <td>{{ $attendance->id ?? 'No ID' }}</td>
                             <td>{{ \Carbon\Carbon::parse($attendance->start_time)->format('d M Y h:i A') }}</td>
                             <td>{{ \Carbon\Carbon::parse($attendance->due_time)->format('d M Y h:i A') }}</td>
                             <td>
@@ -65,13 +58,17 @@
                                 </button>
                             </td>
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr>
+                            <td colspan="5"><div class="alert alert-noti">No attendance records found.</div></td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
 
         <!-- Quiz Table -->
-        <div id="quizTable" class="hidden">
+        <div id="quizTable" style="display: none;">
             <table>
                 <thead>
                     <tr>
@@ -84,7 +81,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($quizzes as $quiz)
+                    @forelse($quizzes as $quiz)
                         <tr>
                             <td>{{ $quiz->subject->name ?? 'No Subject' }}</td>
                             <td>{{ $quiz->title }}</td>
@@ -97,7 +94,11 @@
                                 </button>
                             </td>
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr>
+                            <td colspan="6"><div class="alert alert-noti">No quizzes found.</div></td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
@@ -109,13 +110,18 @@
             const quiz = document.getElementById('quizTable');
 
             if (type === 'attendance') {
-                attendance.classList.remove('hidden');
-                quiz.classList.add('hidden');
+                attendance.style.display = 'block';
+                quiz.style.display = 'none';
             } else {
-                quiz.classList.remove('hidden');
-                attendance.classList.add('hidden');
+                attendance.style.display = 'none';
+                quiz.style.display = 'block';
             }
         }
+
+        // Default show Attendance on page load
+        document.addEventListener("DOMContentLoaded", () => {
+            showTable('attendance');
+        });
     </script>
 </body>
 </html>

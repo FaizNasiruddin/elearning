@@ -75,6 +75,7 @@
                 <th>IC Number</th>
                 <th>Password</th>
                 <th>Form</th>
+                <th>Created at</th>
                 <th></th>
             </tr>
             @foreach ($students as $student)
@@ -83,13 +84,15 @@
         <td>{{ $student->username }}</td>
         <td>{{ $student->password }}</td>
         <td>{{ $student->form }}</td>
+        <td>{{ \Carbon\Carbon::parse($student->created_at)->format('d-m-Y h:i A') }}</td>
         <td class="buttonCol last-column" data-label="Delete">
+            <a class="editbtn" href="/admin-student-edit/{{ $student->id }}" onclick="event.stopPropagation();"></a>
+
             <form method="POST" action="/deleteStudent">
                 @csrf
                 <input type="hidden" name="studentid" value="{{ $student->id }}">
                 <button class="deletebtn" type="submit" onclick="return confirm('Are you sure you want to delete this user?')"></button>
             </form>
-            <a class="editbtn" href="/admin-student-edit/{{ $student->id }}" onclick="event.stopPropagation();"></a>
         </td>
         <!-- <td data-label="Edit">
             

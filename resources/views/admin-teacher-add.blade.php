@@ -13,8 +13,8 @@
         <div class="add">
                 <form action="/registerTeacher" method="POST">
                     @csrf
-                    <input type="text" placeholder="Name" name="fullname"><br>
-                    <input type="text" placeholder="Username" name="username"><br>
+                    <input type="text" placeholder="Full Name" name="fullname"><br>
+                    <input type="text" placeholder="IC Number" name="username"><br>
                     <input type="text" placeholder="Password" name="password"><br>
                     <button type="submit">Add Teacher</button>
                 </form>
@@ -24,6 +24,7 @@
                 <div class="alert alert-danger">
                         @foreach ($errors->all() as $error)
                             {{ $error }}
+                            <br>
                         @endforeach
                 </div>
                 @endif
