@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Subject Details</title>
     <link rel="stylesheet"  href="{{ asset('css/admin-subject-student.css') }}">
-    <link rel="stylesheet"  href="{{ asset('css/all.css') }}">
 </head>
 <body>
     <div class="main">
