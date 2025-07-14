@@ -4,13 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Subjects</title>
-    <link rel="stylesheet" href="{{ asset('css/student-subject.css') }}">
     <link rel="stylesheet" href="{{ asset('css/all.css') }}">
 </head>
 <body>
     @include('navbar-teacher') {{-- or a navbar for teachers --}}
 
     <div class="content">
+        <div class="welcome">
+                <div>Selamat Datang! {{ $teacher->fullname}}</div>
+        </div>
         <div class="subject-list">
             @foreach ($subjects as $subject)
                 @php

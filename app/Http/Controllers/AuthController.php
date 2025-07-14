@@ -90,16 +90,25 @@ public function adminLogin(Request $request)
     return redirect('/admin-login')->with('error', 'Invalid admin credentials.');
 }
 
-    public function logout(Request $request)
+   public function logout(Request $request)
     {
-        // Clears all session data
+        // Store role before flushing session
+        $role = session('role');
+
+        // Clear all session data
         session()->flush();
 
-        return redirect('/');
+        // Redirect based on role
+        if ($role === 'admin') {
+            return redirect('/admin-login')->with('success', 'Logged out successfully.');
+        } elseif ($role === 'teacher') {
+            return redirect('/')->with('success', 'Logged out successfully.');
+        } elseif ($role === 'student') {
+            return redirect('/')->with('success', 'Logged out successfully.');
+        }
+
+        // Default fallback
+        return redirect('/')->with('success', 'Logged out successfully.');
     }
 
-    public function test(Request $request)
-    {
-       return view('test');
-    }
 }

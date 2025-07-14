@@ -16,7 +16,6 @@ body {
 button {
   padding: 10px 5px;
   border-radius: 6px;
-  transition: all 0.25s ease-in-out;
   font-weight: 500;
   border: none;
   background-color: var(--second-color);
@@ -30,28 +29,54 @@ button {
   background-color: var(--main-color);
   font-family: Arial, Helvetica, sans-serif;
   padding: 20px 0px;
+  width: 6rem;
+}
+
+.navbar div{
+  margin: 5px;
+  padding: 4px;
+  border-radius: 3px;
+  position:relative;
 }
 
 .navbar a.selected div {
+  background-color: #cca2a6;
+}
+
+
+.navbar form{
+  width: 100%;
+}
+
+.navbar .other{
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .navbar button{
-  width: 100%;
-   background-color: transparent;
-   border: none;
-  height: 5rem;
+   background-color:#972430;
+   border-radius: 50px;
+   height: 50px;
+   width: 50px;
+   position: relative;
 }
 
 .navbar button img{
   width: 1.8rem;
+  position: absolute;
+  left:50%;
+  top:50%;
+  transform: translate(-50%,-50%);
 }
 
+
 .navbar a {
-  height: 5rem;
   padding: 0 1rem;
   text-decoration: none;
   color: white;
   font-weight: 600;
+  text-align: center;
 }
 
 .menu-selected {
@@ -63,11 +88,38 @@ button {
 }
 
 .subject-image {
-  width: 2.4rem;
+  width: 2.1rem;
 }
 
 .student-image {
-  width: 2.9rem;
+  width: 3.1rem;
+}
+
+.content-image {
+  width: 2.1rem;
+}
+
+.chatbot-image {
+  width: 1.9rem;
+}
+
+/* welcome */
+
+.welcome{
+  width: 100%;
+  height: 10rem;
+  background-color: rgb(22, 251, 236);
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.welcome div{
+  color: white;
+  background-color: rgb(71, 71, 71);
+  display: inline;
+  padding: 1rem;
+  position: absolute;
+  bottom: 10%;
 }
 
 /* profile */
@@ -140,6 +192,14 @@ button {
 .date {
   height: 21px;
   width: 90px;
+}
+
+/* subject */
+
+.subject-card{
+  padding: 20px;
+  margin-bottom: 1px;
+  border-radius: 3px;
 }
 
 /* Sort */
@@ -278,6 +338,7 @@ td {
   text-align: left;
    padding: 8px;
   position: relative;
+  border-bottom: 1px solid #ccc;
 }
 
 tr{
@@ -306,6 +367,41 @@ td {
   float: right;
    vertical-align: middle;
 }
+
+
+
+/* Alerts */
+.alert {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  font-family: sans-serif;
+  border-left: 5px solid;
+  font-size: 0.95rem;
+}
+
+.alert-success {
+  color: #155724;
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+  border-left-color: #28a745;
+}
+
+.alert-danger {
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+  border-left-color: #dc3545;
+}
+
+.alert-noti {
+  color: #0c5460;
+  background-color: #d1ecf1;
+  border-color: #00ddff;
+  border-left-color: #17a2b8;
+}
+
 
 /* Mobile responsiveness */
 @media (max-width: 768px) {
@@ -367,18 +463,83 @@ td {
     padding: 1rem;
   }
 
-  .navbar {
+  .navbar{
     display: flex;
-    justify-content: center;
-    padding: 0;
+    width: 100%;
+    height: 90px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
   }
 
-  .logo-image,
-  .subject-image,
-  .student-image {
-    transform: scale(0.7);
-    transform-origin: center;
+  .navbar p{
+    display: none;
   }
+
+  .navbar .section1{
+    /* margin: 0 100px; */
+    display: flex;
+    justify-content: space-between;
+    width: 20rem;
+  }
+
+  .navbar .section1 a{
+  }
+
+  .navbar .section2{
+    /* margin: 0 100px; */
+    float: right;
+  }
+
+
+  .navbar a{
+    position: relative;
+  }
+  .navbar a div{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-60%);
+  }
+
+  .navbar form{
+    width: 2.5rem;
+  }
+
+
+  .logo-image{
+    width: 2.6rem;
+  }
+
+  .navbar button{
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+    .logo-image {
+    width:2rem;
+  }
+
+  .subject-image {
+    width: 2rem;
+    padding: 0.2rem;
+  }
+
+  .student-image {
+    width: 2rem;
+  }
+
+  .content-image {
+    width: 2rem;
+  }
+
+  .chatbot-image {
+    width: 1.8rem;
+    padding: 2;
+  }
+
+ 
+
 }
 
 /* Alerts */

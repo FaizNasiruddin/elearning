@@ -15,26 +15,18 @@
 @endif
 
     <div class="content">
-        <h1 class="title">{{ $subject->name }} Attendance: <span style="color:green">{{$attendance->start_time}}</span> to <span style="color:red">{{$attendance->due_time}}</span> </h1>
-        <div class="sort">
-            <div>
-                <button onclick="showTable('attendance')">Attendances</button>
-                <button onclick="showTable('quiz')">Quizzes</button>
-            </div>
+    <h1 class="title">{{ $subject->name }} (Form {{$subject->form}}) Attendance:
+        <span style="color:green">{{ $attendance->start_time }}</span> to
+        <span style="color:red">{{ $attendance->due_time }}</span>
+    </h1>
 
-            <div>
-                <form method="GET" action="/admin-subject" style="margin-bottom: 10px;">
-                    <label for="sort">Sort by:</label>
-                    <select name="sort" id="sort" onchange="this.form.submit()">
-                        <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>Latest (Newest First)</option>
-                        <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>Oldest (Oldest First)</option>
-                        <option value="asc" {{ request('sort') == 'asc' ? 'selected' : '' }}>Username A-Z</option>
-                        <option value="desc" {{ request('sort') == 'desc' ? 'selected' : '' }}>Username Z-A</option>
-                    </select>
-                </form>
-            </div>
+    <br>
+
+    @if ($students->isEmpty())
+        <div class="alert alert-noti">
+            No students found for this subject.
         </div>
-        <br>
+    @else
         <table>
             <thead>
                 <tr>
@@ -57,6 +49,8 @@
                 @endforeach
             </tbody>
         </table>
-    </div>
+    @endif
+</div>
+
 </body>
 </html>

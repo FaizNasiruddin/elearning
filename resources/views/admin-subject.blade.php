@@ -65,56 +65,46 @@
             </div>
         </div>
         <br>
-        <table>
+        @if ($subjects->isEmpty())
+    <p class="alert alert-noti">No subjects available.</p>
+@else
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Form</th>
+            <th>Teacher</th>
+            <th>Color</th>
+            <th>Created at</th>
+            <th class="buttonCol"></th>
+        </tr>
+        @foreach ($subjects as $subject)
             <tr>
-                <th>Name</th>
-                <th>Form</th>
-                <th>Teacher</th>
-                <th>Color</th>
-                <th class="buttonCol"></th>
-            </tr>
-            @foreach ($subjects as $subject)
-                <tr>
-                    <td>{{ $subject->name }}</td>
-                    <td>{{ $subject->form }}</td>
-                    <td>
-                        @php
-                            $teacherName = $teachers->firstWhere('id', $subject->teacher_id);
-                        @endphp
-                        {{ $teacherName ? $teacherName->fullname : 'No Teacher' }}
-                    </td>
-                    <td>
-                        <div  style="background-color:{{ $subject->color }}; width:80%; height:20px;">
-
-                        </div>
-                    </td>
-                    <td class="buttonCol last-column">
-                        <button class="viewbtn"  onclick="window.location.href='/admin-subject-particular/{{ $subject->id }}'">View Student</button>
-                        <button class="viewbtn" onclick="window.location.href='/admin-subject-content/{{ $subject->id }}'">View Content</button>
-                        <a class="editbtn" href="/admin-subject-edit/{{ $subject->id }}" onclick="event.stopPropagation();"></a>
-                        <form method="POST" action="/deleteSubject">
-                            @csrf
-                            <input type="hidden" name="subjectid" value="{{ $subject->id }}">
-                            <button class="deletebtn" type="submit" onclick="return confirm('Are you sure you want to delete this user?')"></button>
-                        </form>
-                    </td>
-                    <!-- <td>
-                        <button class="viewbtn" onclick="window.location.href='/admin-subject-content/{{ $subject->id }}'">View Content</button>
-                    </td>
-                    <td>
-                        <form method="POST" action="/deleteSubject">
-                            @csrf
-                            <input type="hidden" name="subjectid" value="{{ $subject->id }}">
-                            <button class="deletebtn" type="submit" onclick="return confirm('Are you sure you want to delete this user?')">Delete</button>
-                        </form>
-                    </td>
-                    <td>
-                        <a class="editbtn" href="/admin-subject-edit/{{ $subject->id }}" 
-                        onclick="event.stopPropagation();">Edit</a>
-                    </td>        -->
-                </tr>   
-            @endforeach
-        </table>
+                <td>{{ $subject->name }}</td>
+                <td>{{ $subject->form }}</td>
+                <td>
+                    @php
+                        $teacherName = $teachers->firstWhere('id', $subject->teacher_id);
+                    @endphp
+                    {{ $teacherName ? $teacherName->fullname : 'No Teacher' }}
+                </td>
+                <td>
+                    <div style="background-color:{{ $subject->color }}; width:80%; height:20px;"></div>
+                </td>
+                <td>{{ \Carbon\Carbon::parse($subject->end_time)->format('d M Y h:i A') }}</td>
+                <td class="buttonCol last-column">
+                    <button class="viewbtn" onclick="window.location.href='/admin-subject-particular/{{ $subject->id }}'">View Student</button>
+                    <button class="viewbtn" onclick="window.location.href='/admin-subject-content/{{ $subject->id }}'">View Content</button>
+                    <a class="editbtn" href="/admin-subject-edit/{{ $subject->id }}" onclick="event.stopPropagation();"></a>
+                    <form method="POST" action="/deleteSubject">
+                        @csrf
+                        <input type="hidden" name="subjectid" value="{{ $subject->id }}">
+                        <button class="deletebtn" type="submit" onclick="return confirm('Are you sure you want to delete this user?')"></button>
+                    </form>
+                </td>
+            </tr>   
+        @endforeach
+    </table>
+@endif
     </div>
 </body>
 </html>

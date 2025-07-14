@@ -59,18 +59,22 @@ class EnrollmentController extends Controller
     }
 
     public function showStudentEnroll($subject_id)
-    {
-        // Get the subject by ID
-        $subject = Subjects::find($subject_id);
+{
+    // Get the subject by ID
+    $subject = Subjects::find($subject_id);
 
-        // Optional: handle if not found
-        if (!$subject) {
-            return redirect()->back()->with('error', 'Subject not found.');
-        }
-
-        // Get only students with the same form as the subject
-        $students = Students::where('form', $subject->form)->get();
-
-        return view('admin-enroll-student', compact('subject', 'students'));
+    if (!$subject) {
+        return redirect()->back()->with('error', 'Subject not found.');
     }
+
+    // Get IDs of already enrolled students
+    $enrolledStudentIds = $subject->students->pluck('id')->toArray();
+
+    // Get students with same form, but not yet enrolled
+    $students = Students::where('form', $subject->form)
+        ->whereNotIn('id', $enrolledStudentIds)
+        ->get();
+
+    return view('admin-enroll-student', compact('subject', 'students'));
+}
 }

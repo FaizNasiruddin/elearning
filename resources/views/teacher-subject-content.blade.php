@@ -77,7 +77,7 @@
                         <input type="hidden" name="id" value="{{ $subject->id }}" />
                         <label for="file">Choose file:</label>
                         <input type="file" name="file" required /><br /><br />
-                        <button type="submit">Upload Note</button>
+                        <button type="submit">Upload File</button>
                     </form>
                 </div>
 
@@ -135,7 +135,7 @@
                                 <form action="/deleteQuiz" method="POST">
                                     @csrf
                                     <input type="hidden" name="quiz_id" value="{{ $quiz->id }}">
-                                    <button>Delete</button>
+                                    <img src="" alt="">
                                 </form>
                             </td>
                         </tr>

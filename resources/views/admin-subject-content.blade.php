@@ -35,6 +35,12 @@
                         <button type="submit">Add Attendance</button>
                     </form>
                 </div>
+                
+                 @if (session('success1'))
+                        <div class="alert alert-success">
+                            {{ session('success1') }}
+                        </div>
+                    @endif
 
                 @if ($attendances->count() > 0)
                 <table>
@@ -67,7 +73,7 @@
                     @endforeach
                 </table>
                 @else
-                    <p class="alert alert-danger">No attendance created.</p>
+                    <p class="alert alert-noti">No attendance created.</p>
                 @endif
             </div>
 
@@ -78,9 +84,16 @@
                         <input type="hidden" name="id" value="{{ $subject->id }}" />
                         <label for="file">Choose file:</label>
                         <input type="file" name="file" required /><br /><br />
-                        <button type="submit">Upload Note</button>
+                        <button type="submit">Upload File</button>
                     </form>
+                    <br>
                 </div>
+
+                        @if (session('success2'))
+                        <div class="alert alert-success">
+                            {{ session('success2') }}
+                        </div>
+                    @endif
 
                 @php $files = $files ?? collect(); @endphp
 
@@ -106,29 +119,39 @@
                     @endforeach
                 </table>
                 @else
-                    <p class="alert alert-danger">No files uploaded yet.</p>
+                    <p class="alert alert-noti">No files uploaded.</p>
                 @endif
             </div>
 
             <div class="quiz">
                 <div class="contents-add">
                     <button type="button" onclick="window.location.href='/admin-quiz/{{ $subject->id }}'">Add Quiz</button>
+                   
                 </div>
+
+                 @if (session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
 
                 @if ($quizzes->count() > 0)
                 <table>
                     @foreach ($quizzes as $quiz)
                         <tr>
                             <td>
-                                <small>{{ \Carbon\Carbon::parse($quiz->created_at)->format('j M Y g:i A') }}</small>
+                                <small>Upload at: {{ \Carbon\Carbon::parse($quiz->created_at)->format('j M Y g:i A') }}</small>
                             </td>
                             <td>
                                 <small>
-                                    {{ \Carbon\Carbon::parse($quiz->start_time)->format('j M Y g:i A') }}<br>
-                                    {{ \Carbon\Carbon::parse($quiz->end_time)->format('j M Y g:i A') }}
+                                    Start: {{ \Carbon\Carbon::parse($quiz->start_time)->format('j M Y g:i A') }}<br>
+                                    end: {{ \Carbon\Carbon::parse($quiz->end_time)->format('j M Y g:i A') }}
                                 </small>
                             </td>
                             <td>{{ $quiz->title }}</td>
+                            <td>
+                                <a href="/admin-student-quizmark/{{ $quiz->id }}/{{ $subject->id }}">View Student Mark</a>
+                            </td>
                             <td>
                                 <a href="/admin-quiz-edit/{{ $quiz->id }}">Edit Quiz</a>
                             </td>
@@ -143,7 +166,7 @@
                     @endforeach
                 </table>
                 @else
-                    <p class="alert alert-danger">No quiz added.</p>
+                    <p class="alert alert-noti">No quiz added.</p>
                 @endif
             </div>
         </div>

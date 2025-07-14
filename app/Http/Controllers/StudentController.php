@@ -11,24 +11,41 @@ use Illuminate\Http\Request;
 
 class StudentController extends Controller
 {
-    public function addStudent(Request $request){
+    public function addStudent(Request $request)
+{
+    // Step 1: Validate input
+    $request->validate([
+        'username' => 'required|digits:12',
+        'password' => 'required',
+        'fullname' => ['required', 'string', 'regex:/^[^0-9]*$/'],
+        'form' => 'required',
+    ], [
+        'fullname.regex' => 'The full name must not contain numbers.',
+    ], [
+        'username' => 'IC Number',
+        'fullname' => 'Full Name',
+        'password' => 'Password',
+        'form' => 'Form',
+    ]);
 
-        $request->validate([
-            'username' => 'required',
-            'password' => 'required',
-            'fullname' => 'required',
-            'form' => 'required',
-        ]);
-
-        Students::create([
-            'username' => $request->username,
-            'password' => $request->password, // Use bcrypt() for real apps
-            'fullname' => $request->fullname,
-            'form' => $request->form,
-        ]);
-
-        return redirect('/admin-student')->with('message', 'Student registered successfully!');
+    // Step 2: Check if IC number is already used
+    $exists = Students::where('username', $request->username)->first();
+    if ($exists) {
+        return redirect()->back()
+            ->withErrors(['username' => 'This IC number is already registered.'])
+            ->withInput();
     }
+
+    // Step 3: Save new student
+    Students::create([
+        'username' => $request->username,
+        'password' => $request->password, // 🔒 consider bcrypt() or Hash::make()
+        'fullname' => $request->fullname,
+        'form' => $request->form,
+    ]);
+
+    return redirect('/admin-student')->with('message', 'Student registered successfully!');
+}
 
     public function deleteStudent(Request $request){
         $id = $request->input('studentid');
@@ -46,41 +63,41 @@ class StudentController extends Controller
     }
 
     public function showStudent(Request $request)
-{
+    {
 
-    // ✅ Block access if not logged in as admin
-    if (!session()->has('user') || session('role') !== 'admin') {
-        return redirect('/admin-login')->with('error', 'Access denied. Please login as admin.');
+        // ✅ Block access if not logged in as admin
+        if (!session()->has('user') || session('role') !== 'admin') {
+            return redirect('/admin-login')->with('error', 'Access denied. Please login as admin.');
+        }
+
+        $query = Students::query();
+
+        // Filter by form if selected
+        if ($request->filled('form')) {
+            $query->where('form', $request->form);
+        }
+
+        // Sort by selected option
+        switch ($request->get('sort', 'latest')) {
+            case 'oldest':
+                $query->orderBy('created_at', 'asc');
+                break;
+            case 'asc':
+                $query->orderBy('fullname', 'asc');
+                break;
+            case 'desc':
+                $query->orderBy('fullname', 'desc');
+                break;
+            case 'latest':
+            default:
+                $query->orderBy('created_at', 'desc');
+                break;
+        }
+
+        $students = $query->get();
+
+        return view('admin-student', compact('students'));
     }
-
-    $query = Students::query();
-
-    // Filter by form if selected
-    if ($request->filled('form')) {
-        $query->where('form', $request->form);
-    }
-
-    // Sort by selected option
-    switch ($request->get('sort', 'latest')) {
-        case 'oldest':
-            $query->orderBy('created_at', 'asc');
-            break;
-        case 'asc':
-            $query->orderBy('username', 'asc');
-            break;
-        case 'desc':
-            $query->orderBy('username', 'desc');
-            break;
-        case 'latest':
-        default:
-            $query->orderBy('created_at', 'desc');
-            break;
-    }
-
-    $students = $query->get();
-
-    return view('admin-student', compact('students'));
-}
     
     public function editStudent($student_id){
 
@@ -92,29 +109,49 @@ class StudentController extends Controller
         return view('/admin-student-edit' ,compact('student'));
     }
 
-    public function updateStudent(Request $request){
+    public function updateStudent(Request $request)
+{
+    $request->validate([
+        'student_id' => 'required',
+        'fullname' => ['required', 'string', 'regex:/^[^0-9]*$/'],
+        'username' => 'required|digits:12',
+        'password' => 'required',
+        'form' => 'required',
+    ], [
+        'fullname.regex' => 'The full name must not contain numbers.',
+        'username.digits' => 'The IC number must be exactly 12 digits.',
+    ], [
+        'fullname' => 'Full Name',
+        'username' => 'IC Number',
+        'password' => 'Password',
+        'form' => 'Form',
+    ]);
 
-         $request->validate([
-            'fullname' => 'required',
-            'username' => 'required',
-            'password' => 'required',
-            'form' => 'required',
+    // Check for duplicate IC number (used by another student)
+    $exists = Students::where('username', $request->username)
+        ->where('id', '!=', $request->student_id)
+        ->first();
+
+    if ($exists) {
+        return redirect()->back()
+            ->withErrors(['username' => 'This IC number is already exist.'])
+            ->withInput();
+    }
+
+    $student = Students::find($request->student_id);
+    if ($student) {
+        $student->update([
+            'fullname' => $request->fullname,
+            'username' => $request->username,
+            'password' => $request->password, // 🔒 consider using Hash::make()
+            'form' => $request->form,
         ]);
 
-        $student = Students::find($request->student_id);
-        if ($student) {
-            $student->update([
-                'fullname' => $request->fullname,
-                'username' => $request->username,
-                'password' => $request->password,
-                'form' => $request->form,
-            ]);
-
-            return redirect('/admin-student')->with('message', 'Subject updated successfully!');
-        }
-
-        return redirect()->back()->with('error', 'Subject not found.');
+        return redirect('/admin-student')->with('message', 'Student updated successfully!');
     }
+
+    return redirect()->back()->with('error', 'Student not found.');
+}
 
     public function showStudentSubject() {
 

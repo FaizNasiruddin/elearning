@@ -10,24 +10,41 @@ use Illuminate\Http\Request;
 
 class SubjectController extends Controller
 {
-   public function addSubject(Request $request)
+public function addSubject(Request $request)
 {
-    // Check if the user is logged in and has 'admin' role
+    // ✅ Check if the user is logged in and has 'admin' role
     if (!session()->has('user') || session('role') !== 'admin') {
         return redirect('/admin-login')->with('error', 'Access denied. Please login as admin.');
     }
 
-    // Validate the input
-    $request->validate([
-        'subjectname' => 'required',
-        'subjectcolor' => 'required',
-        'subjectteacher' => 'required',
-        'subjectform' => 'required',
+    // ✅ Validate input with custom messages
+     $request->validate([
+        'subjectname' => 'required|string|max:100',
+        'subjectcolor' => 'required|string',
+        'subjectteacher' => 'required|exists:teachers,id',
+        'subjectform' => 'required|in:1,2,3,4,5,6',
+    ], [], [
+        'subjectname' => 'Subject Name',
+        'subjectcolor' => 'Subject Color',
+        'subjectteacher' => 'Teacher',
+        'subjectform' => 'Form',
     ]);
 
-    // Create the subject
+    // ✅ Check if subject with same name, form, and teacher already exists
+    $exists = Subjects::where('name', $request->subjectname)
+        ->where('form', $request->subjectform)
+        ->where('teacher_id', $request->subjectteacher)
+        ->first();
+
+    if ($exists) {
+        return redirect()->back()
+            ->withErrors(['subjectname' => 'This subject already exists for the selected teacher and form.'])
+            ->withInput();
+    }
+
+    // ✅ Create the subject
     Subjects::create([
-        'name' => $request->subjectname,
+        'name' => trim($request->subjectname),
         'color' => $request->subjectcolor,
         'teacher_id' => $request->subjectteacher,
         'form' => $request->subjectform,
@@ -62,28 +79,51 @@ class SubjectController extends Controller
         return view('/admin-subject-edit' ,compact('subject','teachers'));
     }
 
-    public function updateSubject(Request $request){
+    public function updateSubject(Request $request)
+{
+    $request->validate([
+        'subject_id' => 'required',
+        'subjectname' => 'required',
+        'subjectcolor' => 'required',
+        'subjectteacher' => 'required',
+        'subjectform' => 'required', // make sure this is passed from the form
+    ], [], [
+        'subjectname' => 'Full Name',
+        'subjectcolor' => 'Color',
+        'subjectteacher' => 'Teacher',
+        'subjectform' => 'Form',
+    ]);
 
-        $request->validate([
-            'subject_id' => 'required',
-            'subjectname' => 'required',
-            'subjectcolor' => 'required',
-            'subjectteacher' => 'required',
-        ]);
+    $subject = Subjects::find($request->subject_id);
 
-        $subject = Subjects::find($request->subject_id);
-        if ($subject) {
-            $subject->update([
-                'name' => $request->subjectname,
-                'color' => $request->subjectcolor,
-                'teacher_id' => $request->subjectteacher,
-            ]);
-
-            return redirect('/admin-subject')->with('message', 'Subject updated successfully!');
-        }
-
+    if (!$subject) {
         return redirect()->back()->with('error', 'Subject not found.');
     }
+
+    // 🔒 Check if the same subject name + form + teacher already exists (exclude current)
+    $duplicate = Subjects::where('name', $request->subjectname)
+        ->where('form', $request->subjectform)
+        ->where('teacher_id', $request->subjectteacher)
+        ->where('id', '!=', $request->subject_id)
+        ->exists();
+
+    if ($duplicate) {
+        return redirect()->back()
+            ->withErrors(['subjectname' => 'This subject already exists'])
+            ->withInput();
+    }
+
+    // ✅ Update subject
+    $subject->update([
+        'name' => $request->subjectname,
+        'color' => $request->subjectcolor,
+        'teacher_id' => $request->subjectteacher,
+        'form' => $request->subjectform,
+    ]);
+
+    return redirect('/admin-subject')->with('message', 'Subject updated successfully!');
+}
+
 
     public function showSubject(Request $request) {
         // ✅ Block access if not logged in as admin

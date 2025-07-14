@@ -16,36 +16,38 @@ class QuizController extends Controller
     
     public function showAdminQuiz($subject_id)
     {
-        if (!session()->has('user') || session('role') !== 'admin') {
-            return redirect('/admin-login')->with('error', 'Access denied. Please login as admin.');
-        }
+        if (!session()->has('user') || !in_array(session('role'), ['admin', 'teacher'])) {
+    return redirect('/admin-login')->with('error', 'Access denied. Please login.');
+}
         return view('admin-quiz', compact('subject_id'));
     }
-
-    public function createQuiz(Request $request)
+public function createQuiz(Request $request)
 {
+    // Ensure only admin can access
+    if (!session()->has('user') || !in_array(session('role'), ['admin', 'teacher'])) {
+    return redirect('/admin-login')->with('error', 'Access denied. Please login.');
+}
 
-     if (!session()->has('user') || session('role') !== 'admin') {
-        return redirect('/admin-login')->with('error', 'Access denied. Please login as admin.');
-    }
+    // Validate form input
+    $validated = $request->validate([
+        'quizTitle' => 'required|string|max:255',
+        'subject_id' => 'required|exists:subjects,id',
+        'start_date' => 'required|date_format:Y-m-d',
+        'start_time' => 'required|date_format:H:i',
+        'end_date'   => 'required|date_format:Y-m-d',
+        'end_time'   => 'required|date_format:H:i',
+        'time_limit' => 'required|integer|min:1',
+        'question' => 'required|array',
+        'question.*.text' => 'required|string',
+        'question.*.options' => 'required|array|size:4',
+        'question.*.correct_option' => 'required|in:A,B,C,D',
+    ]);
 
-   $validated = $request->validate([
-    'quizTitle' => 'required|string|max:255',
-    'subject_id' => 'required|exists:subjects,id',
-    'start_date' => 'required|date_format:Y-m-d',
-    'start_time' => 'required|date_format:H:i',
-    'end_date'   => 'required|date_format:Y-m-d',
-    'end_time'   => 'required|date_format:H:i',
-    'time_limit' => 'required|integer|min:1',
-    'question' => 'required|array',
-    'question.*.text' => 'required|string',
-    'question.*.options' => 'required|array|size:4',
-    'question.*.correct_option' => 'required|in:A,B,C,D',
-]);
+    // Combine date and time into full datetime
+    $startDateTime = \Carbon\Carbon::createFromFormat('Y-m-d H:i', $validated['start_date'] . ' ' . $validated['start_time']);
+    $endDateTime = \Carbon\Carbon::createFromFormat('Y-m-d H:i', $validated['end_date'] . ' ' . $validated['end_time']);
 
-$startDateTime = \Carbon\Carbon::createFromFormat('Y-m-d H:i', $validated['start_date'] . ' ' . $validated['start_time']);
-$endDateTime = \Carbon\Carbon::createFromFormat('Y-m-d H:i', $validated['end_date'] . ' ' . $validated['end_time']);
-    // Create the quiz
+    // Create quiz
     $quiz = Quizzes::create([
         'title'       => $validated['quizTitle'],
         'subject_id'  => $validated['subject_id'],
@@ -54,7 +56,7 @@ $endDateTime = \Carbon\Carbon::createFromFormat('Y-m-d H:i', $validated['end_dat
         'time_limit'  => $validated['time_limit'],
     ]);
 
-    // Save questions
+    // Create each question
     foreach ($validated['question'] as $q) {
         Questions::create([
             'quiz_id'        => $quiz->id,
@@ -66,9 +68,15 @@ $endDateTime = \Carbon\Carbon::createFromFormat('Y-m-d H:i', $validated['end_dat
             'correct_answer' => $q['correct_option'],
         ]);
     }
-
-    return redirect()->back()->with('success', 'Quiz created successfully!');
+// Redirect to subject's particular page based on role
+if (session('role') === 'teacher') {
+    return redirect("/teacher-subject-content/{$validated['subject_id']}")->with('success', 'Quiz created successfully!');
 }
+
+return redirect("/admin-subject-content/{$validated['subject_id']}")->with('success', 'Quiz created successfully!');
+
+}
+
 
 
     public function deleteQuiz(Request $request)
@@ -143,55 +151,57 @@ $endDateTime = \Carbon\Carbon::createFromFormat('Y-m-d H:i', $validated['end_dat
         ]);
     }
 
-    public function submitQuiz(Request $request)
-    {
-        // Validate the request
-        $validated = $request->validate([
-            'quiz_id' => 'required|exists:quizzes,id',
-            'answers' => 'required|array',
-        ]);
+   public function submitQuiz(Request $request)
+{
+    // Validate the request
+    $validated = $request->validate([
+        'quiz_id' => 'required|exists:quizzes,id',
+        'answers' => 'required|array',
+    ]);
 
-        $quizId = $validated['quiz_id'];
-        $answers = $validated['answers'];
+    $quizId = $validated['quiz_id'];
+    $answers = $validated['answers'];
 
-        // Get student ID from session
-        $studentId = Session::get('user');
+    // Get student ID from session
+    $studentId = Session::get('user');
 
-        if (!$studentId) {
-            return redirect()->back()->withErrors(['error' => 'Student not logged in.']);
-        }
-
-        // Get quiz questions
-        $questions = Questions::where('quiz_id', $quizId)->get();
-        $totalQuestions = $questions->count();
-        $score = 0;
-
-        foreach ($questions as $question) {
-            if (
-                isset($answers[$question->id]) &&
-                $answers[$question->id] === $question->correct_answer
-            ) {
-                $score++;
-            }
-        }
-
-        // Save quiz result
-        StudentQuizMark::updateOrCreate(
-            [
-                'student_id' => $studentId,
-                'quiz_id' => $quizId,
-            ],
-            [
-                'score' => $score,
-                'total_questions' => $totalQuestions,
-            ]
-        );
-
-        // Flash success message
-        Session::flash('success', "Quiz submitted! You scored $score out of $totalQuestions.");
-
-        // Redirect to student dashboard or result page
+    if (!$studentId) {
+        return redirect()->back()->withErrors(['error' => 'Student not logged in.']);
     }
+
+    // Get quiz and its questions
+    $quiz = Quizzes::findOrFail($quizId);
+    $subjectId = $quiz->subject_id;
+
+    $questions = Questions::where('quiz_id', $quizId)->get();
+    $totalQuestions = $questions->count();
+    $score = 0;
+
+    foreach ($questions as $question) {
+        if (
+            isset($answers[$question->id]) &&
+            $answers[$question->id] === $question->correct_answer
+        ) {
+            $score++;
+        }
+    }
+
+    // Save quiz result
+    StudentQuizMark::updateOrCreate(
+        [
+            'student_id' => $studentId,
+            'quiz_id' => $quizId,
+        ],
+        [
+            'score' => $score,
+            'total_questions' => $totalQuestions,
+        ]
+    );
+
+    // Redirect to student's subject content page
+    return redirect("/student-subject-content/{$subjectId}")
+        ->with('success', 'Quiz answered successfully.');
+}
 
     public function showStudentQuizmark($quiz_id, $subject_id)
     {
