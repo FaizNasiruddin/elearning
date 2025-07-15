@@ -106,7 +106,7 @@
             <input type="text" name="question[{{ $index }}][options][]" value="{{ $question->option_d }}" required placeholder="Option D">
 
             <label>Correct Answer:</label>
-            <select name="question[{{ $index }}][correct_option]" required>
+            <select class="formInput" name="question[{{ $index }}][correct_option]" required>
               <option value="">Select Correct Option</option>
               <option value="A" {{ $question->correct_answer == 'A' ? 'selected' : '' }}>Option A</option>
               <option value="B" {{ $question->correct_answer == 'B' ? 'selected' : '' }}>Option B</option>

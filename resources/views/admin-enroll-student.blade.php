@@ -16,7 +16,7 @@
             @csrf
             <input name="subject_id" type="hidden" value="{{ $subject->id }}">
 
-            <select name="student_id">
+            <select class="formInput" name="student_id">
                 <option value="" disabled selected>Select Student</option>
                 @foreach($students as $student)
                     <option value="{{ $student->id }}">{{ $student->fullname }} ({{$student->username}})</option>

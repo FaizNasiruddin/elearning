@@ -16,7 +16,7 @@
                     <input type="text" name="subjectname" placeholder="Subject Name" value="{{ old('subjectname') }}">
                     <br>
 
-                    <select name="subjectteacher">
+                    <select class="formInput" name="subjectteacher">
                         <option value="">-- Select Teacher --</option>
                         @foreach ($teachers as $teacher)
                             <option value="{{ $teacher->id }}" {{ old('subjectteacher') == $teacher->id ? 'selected' : '' }}>
@@ -26,7 +26,7 @@
                     </select>
                     <br>
 
-                    <select id="subject" name="subjectform">
+                    <select class="formInput" id="subject" name="subjectform">
                         <option value="">-- Select Form --</option>
                         <option value="1" {{ old('subjectform') == '1' ? 'selected' : '' }}>Form 1</option>
                         <option value="2" {{ old('subjectform') == '2' ? 'selected' : '' }}>Form 2</option>

@@ -47,7 +47,7 @@
             <div>
                 <form method="GET" action="/admin-student" style="margin-bottom: 10px;">
                     <label for="filterForm">Filter by Form:</label>
-                    <select name="form" id="filterForm" onchange="this.form.submit()">
+                    <select class="formInput" class="formInput" name="form" id="filterForm" onchange="this.form.submit()">
                         <option value="">All</option>
                         <option value="1" {{ request('form') == '1' ? 'selected' : '' }}>Form 1</option>
                         <option value="2" {{ request('form') == '2' ? 'selected' : '' }}>Form 2</option>
@@ -58,7 +58,7 @@
 
                     <!-- Sorting dropdown -->
                     <label for="sort">Sort by:</label>
-                    <select name="sort" id="sort" onchange="this.form.submit()">
+                    <select class="formInput" class="formInput" name="sort" id="sort" onchange="this.form.submit()">
                         <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>Latest (Newest First)</option>
                         <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>Oldest (Oldest First)</option>
                         <option value="asc" {{ request('sort') == 'asc' ? 'selected' : '' }}>Username A-Z</option>

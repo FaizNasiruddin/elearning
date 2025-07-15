@@ -33,7 +33,7 @@
              <button onclick="location.href='/admin-teacher-add'">Add Teacher Account</button>
             <form method="GET" action="/admin-teacher" style="margin-bottom: 10px;">
                 <label for="sort">Sort by:</label>
-                <select name="sort" id="sort" onchange="this.form.submit()">
+                <select class="formInput" name="sort" id="sort" onchange="this.form.submit()">
                     <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>Latest (Newest First)</option>
                     <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>Oldest (Oldest First)</option>
                     <option value="asc" {{ request('sort') == 'asc' ? 'selected' : '' }}>Username A-Z</option>

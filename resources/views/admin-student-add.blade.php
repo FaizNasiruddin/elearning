@@ -19,7 +19,7 @@
             <br>
             <input type="text" placeholder="Password" name="password">
             <br>
-            <select name="form" id="form">
+            <select class="formInput" name="form" id="form">
                 <option value="1">Form 1</option>
                 <option value="2">Form 2</option>
                 <option value="3">Form 3</option>

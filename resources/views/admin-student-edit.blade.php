@@ -21,7 +21,7 @@
             <br>
             <input type="text" name="password" value="{{ $student->password }}">
             <br>
-            <select id="student" name="form">
+            <select class="formInput" id="student" name="form">
                 <option value="1" {{ $student->form == 1 ? 'selected' : '' }}>Form 1</option>
                 <option value="2" {{ $student->form == 2 ? 'selected' : '' }}>Form 2</option>
                 <option value="3" {{ $student->form == 3 ? 'selected' : '' }}>Form 3</option>

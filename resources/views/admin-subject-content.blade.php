@@ -25,12 +25,12 @@
                         <input type="hidden" name="subject_id" value="{{ $subject->id }}" />
 
                         <label>From:</label><br>
-                        <input type="date" name="start_date" required>
-                        <input type="time" name="start_time" value="08:00" required><br><br>
+                        <input  class="formInput"type="date" name="start_date" required>
+                        <input class="formInput" type="time" name="start_time" value="08:00" required><br><br>
 
                         <label>To:</label><br>
-                        <input type="date" name="due_date" required>
-                        <input type="time" name="due_time" value="08:00" required><br><br>
+                        <input class="formInput" type="date" name="due_date" required>
+                        <input class="formInput" type="time" name="due_time" value="08:00" required><br><br>
 
                         <button type="submit">Add Attendance</button>
                     </form>
@@ -57,9 +57,10 @@
                             </td>
                             <td>{{ $attendance->password }}</td>
                             <td>
-                                <a href="/admin-student-attendance/{{ $attendance->id }}/{{ $subject->id }}">
+                                <button class="viewbtn" onclick="location.href='/admin-student-attendance/{{ $attendance->id }}/{{ $subject->id }}'">
                                     View Student Attendance
-                                </a>
+                                </button>
+
                             </td>
                             <td class="buttonCol">
                                 <form action="/deleteAttendance" method="POST">
@@ -82,9 +83,9 @@
                     <form action="/file-upload" method="POST" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="id" value="{{ $subject->id }}" />
-                        <label for="file">Choose file:</label>
-                        <input type="file" name="file" required /><br /><br />
-                        <button type="submit">Upload File</button>
+                        <label  for="file">Choose file:</label>
+                        <input  type="file" name="file" required /><br /><br />
+                        <button  type="submit">Upload File</button>
                     </form>
                     <br>
                 </div>
@@ -106,7 +107,9 @@
                             </td>
                             <td>{{ $file->filename }}</td>
                             <td>
-                                <a href="{{ route('view.file', $file->id) }}" target="_blank">View File</a>
+                                <button class="viewbtn" onclick="window.open('{{ route('view.file', $file->id) }}', '_blank')">
+                                    View File
+                                </button>
                             </td>
                             <td class="buttonCol">
                                 <form action="/deleteFile" method="POST">
@@ -153,7 +156,10 @@
                                 <a href="/admin-student-quizmark/{{ $quiz->id }}/{{ $subject->id }}">View Student Mark</a>
                             </td>
                             <td>
-                                <a href="/admin-quiz-edit/{{ $quiz->id }}">Edit Quiz</a>
+                                <button class="viewbtn" onclick="location.href='/admin-quiz-edit/{{ $quiz->id }}'">
+                                    Edit Quiz
+                                </button>
+
                             </td>
                             <td class="buttonCol">
                                 <form action="/deleteQuiz" method="POST">

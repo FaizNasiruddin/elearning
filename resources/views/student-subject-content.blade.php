@@ -47,14 +47,17 @@
                       @elseif ($now->lt($start))
                         <span style="color: gray;">Not started yet ({{ $start->format('j M Y g:i A') }})</span>
                       @elseif ($now->gt($due))
-                        <span style="color: red;">Attendance closed ({{ $due->format('j M Y g:i A') }})</span>
+                        <span style="color: red;">Attendance closed</span>
+                        <!-- <span style="color: red;">Attendance closed ({{ $due->format('j M Y g:i A') }})</span> -->
                       @else
                         <form action="/tickAttendance" method="POST">
                           @csrf
                           <input type="hidden" name="student_id" value="{{ $student }}">
                           <input type="hidden" name="attendance_id" value="{{ $attendance->id }}">
                           <input type="text" name="password" placeholder="Enter Code" required>
-                          <button type="submit" style="background-color: red; color: white; border: none; padding: 5px 10px; cursor: pointer;">
+                          <br>
+                          <br>
+                          <button type="submit">
                             Mark as Present
                           </button>
                         </form>
@@ -92,7 +95,9 @@
                       </small>
                     </td>
                     <td class="last-column">
-                      <a href="{{ route('view.file', $file->id) }}" target="_blank">View File</a>
+                      <button class="viewbtn" onclick="window.open('{{ route('view.file', $file->id) }}', '_blank')">
+                        View File
+                    </button>
                     </td>
                   </tr>
                 @endforeach
@@ -145,13 +150,13 @@
 
                       @if ($result)
                         <span style="color: blue;">
-                          Attempted – Score: {{ $result->score }}/{{ $result->total_questions }}
+                          {{ $result->score }}/{{ $result->total_questions }}
                           ({{ round(($result->score / $result->total_questions) * 100) }}%)
                         </span>
                       @elseif ($now->lt($start))
-                        <span style="color: gray;">Quiz not started ({{ $start->format('Y-m-d H:i') }})</span>
+                        <span style="color: gray;">Quiz not started</span>
                       @elseif ($now->gt($end))
-                        <span style="color: red;">Quiz closed ({{ $end->format('Y-m-d H:i') }})</span>
+                        <span style="color: red;">Quiz closed</span>
                       @else
                         <a href="/student-quiz/{{ $quiz->id }}"
                            onclick="return confirm('Are you sure you want to start the quiz now?\nTime limit is {{ $quiz->time_limit }} minute{{ $quiz->time_limit > 1 ? 's' : '' }}.')"

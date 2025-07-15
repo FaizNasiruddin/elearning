@@ -25,10 +25,11 @@
             <div>
                 <form method="GET" action="/admin-content" style="margin-bottom: 10px;">
                     <label for="sort">Sort by:</label>
-                    <select name="sort" id="sort" onchange="this.form.submit()">
+                    <select class="formInput" name="sort" id="sort" onchange="this.form.submit()">
                         <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>Latest (Newest First)</option>
                         <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>Oldest (Oldest First)</option>
                     </select>
+                    <input type="hidden" name="type" id="tableType" value="{{ request('type', 'attendance') }}">
                 </form>
             </div>
         </div>
@@ -41,6 +42,7 @@
                 <thead>
                     <tr>
                         <th>Subject</th>
+                        <th>Created at</th>
                         <th>Start</th>
                         <th>End</th>
                         <th></th>
@@ -50,10 +52,11 @@
                     @forelse($attendances as $attendance)
                         <tr>
                             <td>{{ $attendance->subject->name ?? 'No Subject' }}</td>
+                            <td>{{ \Carbon\Carbon::parse($attendance->created_at)->format('d M Y h:i A') }}</td>
                             <td>{{ \Carbon\Carbon::parse($attendance->start_time)->format('d M Y h:i A') }}</td>
                             <td>{{ \Carbon\Carbon::parse($attendance->due_time)->format('d M Y h:i A') }}</td>
-                            <td>
-                                <button class="last-column" onclick="location.href='/admin-student-attendance/{{ $attendance->id }}/{{ $attendance->subject->id }}'">
+                            <td class="last-column">
+                                <button class="viewbtn"  onclick="location.href='/admin-student-attendance/{{ $attendance->id }}/{{ $attendance->subject->id }}'">
                                     View Student Attendance
                                 </button>
                             </td>
@@ -74,7 +77,7 @@
                     <tr>
                         <th>Subject</th>
                         <th>Title</th>
-                        <th>Created</th>
+                        <th>Created at</th>
                         <th>Start</th>
                         <th>End</th>
                         <th></th>
@@ -89,7 +92,7 @@
                             <td>{{ \Carbon\Carbon::parse($quiz->start_time)->format('d M Y h:i A') }}</td>
                             <td>{{ \Carbon\Carbon::parse($quiz->end_time)->format('d M Y h:i A') }}</td>
                             <td class="last-column">
-                                <button onclick="location.href='/admin-student-quizmark/{{ $quiz->id }}/{{ $quiz->subject_id }}'">
+                                <button class="viewbtn" onclick="location.href='/admin-student-quizmark/{{ $quiz->id }}/{{ $quiz->subject_id }}'">
                                     Student Quiz Mark
                                 </button>
                             </td>
@@ -108,6 +111,11 @@
         function showTable(type) {
             const attendance = document.getElementById('attendanceTable');
             const quiz = document.getElementById('quizTable');
+            const tableTypeInput = document.getElementById('tableType');
+
+            if (tableTypeInput) {
+                tableTypeInput.value = type;
+            }
 
             if (type === 'attendance') {
                 attendance.style.display = 'block';
@@ -118,9 +126,10 @@
             }
         }
 
-        // Default show Attendance on page load
         document.addEventListener("DOMContentLoaded", () => {
-            showTable('attendance');
+            const params = new URLSearchParams(window.location.search);
+            const type = params.get("type") || 'attendance';
+            showTable(type);
         });
     </script>
 </body>

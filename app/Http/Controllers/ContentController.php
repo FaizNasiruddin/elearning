@@ -139,28 +139,27 @@ public function addAttendance(Request $request)
     }
 
     public function showStudentAttendance($attendance_id, $subject_id)
-    {
-        if (!session()->has('user') || !in_array(session('role'), ['admin', 'teacher'])) {
-                return redirect('/')->with('error', 'Access denied. Please login.');
-            }
-        // Get all student IDs linked to this subject
-        $studentIds = StudentSubject::where('subject_id', $subject_id)->pluck('student_id');
-
-        // Get students
-        $students = Students::whereIn('id', $studentIds)->get();
-
-        // Get attendance records for this attendance ID
-        $attendanceRecords = AttendanceRecord::where('attendance_id', $attendance_id)
-                                            ->pluck('student_id')
-                                            ->toArray(); // Array of students who are marked present
-
-        // Get attendance and subject models
-        $attendance = Attendance::findOrFail($attendance_id);
-        $subject = Subjects::findOrFail($subject_id);
-
-        // Pass all data to the view
-        return view('admin-student-attendance', compact('students', 'attendanceRecords', 'attendance', 'subject'));
+{
+    if (!session()->has('user') || !in_array(session('role'), ['admin', 'teacher'])) {
+        return redirect('/')->with('error', 'Access denied. Please login.');
     }
+
+    // Get all student IDs linked to this subject
+    $studentIds = StudentSubject::where('subject_id', $subject_id)->pluck('student_id');
+
+    // Get students
+    $students = Students::whereIn('id', $studentIds)->get();
+
+    // ✅ Get full attendance records (with created_at, etc.)
+    $attendanceRecords = AttendanceRecord::where('attendance_id', $attendance_id)->get();
+
+    // Get attendance and subject models
+    $attendance = Attendance::findOrFail($attendance_id);
+    $subject = Subjects::findOrFail($subject_id);
+
+    // Pass all data to the view
+    return view('admin-student-attendance', compact('students', 'attendanceRecords', 'attendance', 'subject'));
+}
 
  public function showStudentAttendanceTeacher($attendance_id, $subject_id)
 {

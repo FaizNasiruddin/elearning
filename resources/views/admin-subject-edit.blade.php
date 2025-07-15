@@ -16,7 +16,7 @@
                     @csrf
                     <input type="hidden" name="subject_id" value="{{ $subject->id }}">
                     <input type="text" name="subjectname" value="{{ $subject->name }}">
-                    <select name="subjectteacher">
+                    <select class="formInput" name="subjectteacher">
                         <option value="">-- Select Teacher --</option>
                         @foreach ($teachers as $teacher)
                             <option value="{{ $teacher->id }}" {{ $subject->teacher_id==$teacher->id?"selected":""}}>{{ $teacher->fullname }}</option>
@@ -26,7 +26,7 @@
                     <input type="color" name="subjectcolor" value="{{ $subject->color }}" >
                     <br>
                     
-            <select id="subject" name="subjectform">
+            <select class="formInput" id="subject" name="subjectform">
                 <option value="1" {{ $subject->form == 1 ? 'selected' : '' }}>Form 1</option>
                 <option value="2" {{ $subject->form == 2 ? 'selected' : '' }}>Form 2</option>
                 <option value="3" {{ $subject->form == 3 ? 'selected' : '' }}>Form 3</option>

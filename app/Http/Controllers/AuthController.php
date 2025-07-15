@@ -70,7 +70,7 @@ public function login(Request $request)
         return redirect('/teacher-subject');
     }
 
-    return redirect('/login')->with('error', 'Invalid credentials.');
+    return redirect('/')->with('error', 'Invalid credentials.');
 }
 
 

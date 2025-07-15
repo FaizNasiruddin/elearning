@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="{{ asset('css/student-login.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/all.css') }}">
 </head>
 <body>
     <?php
@@ -15,9 +16,10 @@
     <div class="login-container">
         <div class="logo">
             <img src="{{ asset('icon/logo.png') }}" class="logo-image" src="media/logo.png">
+            <div class="logo-title">
             <p class="login-title">PTBTP eLearning</p>
-            <br>
             <p>Administrator</p>
+            </div>
         </div>
         <div class="login">
             <form action="/adminLogin" method="POST">

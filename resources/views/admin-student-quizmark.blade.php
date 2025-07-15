@@ -33,8 +33,9 @@
                         <tr>
                             <th>Student Name</th>
                             <th>Quiz Status</th>
+                            <th>Answer at</th>
                             <th>Score</th>
-                            <th>Percentage</th>
+                            <th class="last-column">Percentage</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -44,13 +45,16 @@
                             @endphp
                             <tr>
                                 <td>{{ $student->fullname }}</td>
-                                <td>
+                                <!-- <td>
                                     @if ($mark)
                                         <span style="color: green; font-weight: bold;">Attempted</span>
                                     @else
                                         <span style="color: red; font-weight: bold;">Not Attempted</span>
                                     @endif
-                                </td>
+                                </td> -->
+                               <td>
+    {{ \Carbon\Carbon::parse($mark->created_at)->format('d M Y h:i A') }}
+</td>
                                 <td>
                                     @if ($mark)
                                         {{ $mark->score }} / {{ $mark->total_questions }}
@@ -58,7 +62,7 @@
                                         —
                                     @endif
                                 </td>
-                                <td>
+                                <td class="last-column">
                                     @if ($mark && $mark->total_questions > 0)
                                         {{ round(($mark->score / $mark->total_questions) * 100) }}%
                                     @else
