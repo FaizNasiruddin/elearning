@@ -45,13 +45,13 @@
                             @endphp
                             <tr>
                                 <td>{{ $student->fullname }}</td>
-                                <!-- <td>
+                                <td>
                                     @if ($mark)
                                         <span style="color: green; font-weight: bold;">Attempted</span>
                                     @else
                                         <span style="color: red; font-weight: bold;">Not Attempted</span>
                                     @endif
-                                </td> -->
+                                </td>
                                <td>
     {{ \Carbon\Carbon::parse($mark->created_at)->format('d M Y h:i A') }}
 </td>

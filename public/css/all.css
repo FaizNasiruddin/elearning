@@ -2,6 +2,8 @@
   --main-color: #2a9397;
   --second-color: color-mix(in srgb, var(--main-color) 40%, white);
   --third-color: color-mix(in srgb, var(--main-color) 80%, white);
+  --forth-color:  #0b6e71;
+;
 }
 
 * {
@@ -94,6 +96,9 @@ button {
 }
 
 .logo-image {
+  background-color: white;
+  border-radius: 2px;
+  padding: 2px;
   width: 3rem;
 }
 
@@ -284,7 +289,7 @@ button {
 
 .edit button:hover,
 .add button:hover {
-  background-color: #9e1f29;
+  background-color: var(--forth-color);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
@@ -504,6 +509,7 @@ td {
      display: flex;
     justify-content: space-between;
     width: 10rem;
+    padding: 0;
   }
 
   .navbar .section2{

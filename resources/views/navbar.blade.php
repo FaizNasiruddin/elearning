@@ -2,7 +2,7 @@
 <div class="navbar">
     {{-- Logo --}}
     <div class="section1s">
-        <a href="/student-subject" class="logo">
+        <a href="/student-subject" class="logo" style="padding:5px;">
             <img class="logo-image" src="{{ asset('icon/logo.png') }}" alt="Logo">
         </a>
     </div>

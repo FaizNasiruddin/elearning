@@ -79,8 +79,7 @@
                         <input type="file" name="file" required /><br /><br />
                         <button type="submit">Upload File</button>
                     </form>
-                </div>
-
+                    
                 @php $files = $files ?? collect(); @endphp
 
                 @if ($files->count() > 0)
@@ -107,6 +106,8 @@
                 @else
                     <p class="alert alert-danger">No files uploaded yet.</p>
                 @endif
+                </div>
+
             </div>
 
             <div class="quiz">

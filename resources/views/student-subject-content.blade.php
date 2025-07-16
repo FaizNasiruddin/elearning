@@ -54,12 +54,19 @@
                           @csrf
                           <input type="hidden" name="student_id" value="{{ $student }}">
                           <input type="hidden" name="attendance_id" value="{{ $attendance->id }}">
-                          <input type="text" name="password" placeholder="Enter Code" required>
+                          <input class="formInput" type="text" name="password" placeholder="Enter Code" required>
                           <br>
                           <br>
                           <button type="submit">
                             Mark as Present
                           </button>
+                          <br>
+                          <br>
+                            @if (session('error'))
+                                <div class="alert alert-danger">
+                                    {{ session('error') }}
+                                </div>
+                            @endif
                         </form>
                       @endif
                     </td>
