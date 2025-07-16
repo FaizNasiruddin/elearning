@@ -500,6 +500,12 @@ td {
   .navbar .section1 a{
   }
 
+  .navbar .section1s{
+     display: flex;
+    justify-content: space-between;
+    width: 10rem;
+  }
+
   .navbar .section2{
     /* margin: 0 100px; */
     float: right;
@@ -552,7 +558,7 @@ td {
     padding: 2;
   }
 
- 
+
 
 }
 

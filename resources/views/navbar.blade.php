@@ -1,7 +1,7 @@
 <!-- 🟦 NAVBAR -->
 <div class="navbar">
     {{-- Logo --}}
-    <div class="section1">
+    <div class="section1s">
         <a href="/student-subject" class="logo">
             <img class="logo-image" src="{{ asset('icon/logo.png') }}" alt="Logo">
         </a>
@@ -55,6 +55,6 @@
   });
 </script> -->
 
-<script src="https://cdn.botpress.cloud/webchat/v3.1/inject.js" defer></script>
-<script src="https://files.bpcontent.cloud/2025/07/02/22/20250702224627-B4D0LC44.js" defer></script>
+<!-- <script src="https://cdn.botpress.cloud/webchat/v3.1/inject.js" defer></script>
+<script src="https://files.bpcontent.cloud/2025/07/02/22/20250702224627-B4D0LC44.js" defer></script> -->
     

@@ -1,5 +1,5 @@
 <div class="navbar">
-    <div class="section1" >
+<div class="section1s" >
         <div>
                 <img class="logo-image" src="{{ asset('icon/logo.png') }}" alt="Logo">
             </div>
@@ -30,6 +30,6 @@
     </div>
 </div>
 
-{{-- Botpress script --}}
+<!-- {{-- Botpress script --}}
 <script src="https://cdn.botpress.cloud/webchat/v3.0/inject.js"></script>
-<script src="https://files.bpcontent.cloud/2025/07/02/22/20250702224627-B4D0LC44.js"></script>
+<script src="https://files.bpcontent.cloud/2025/07/02/22/20250702224627-B4D0LC44.js"></script> -->

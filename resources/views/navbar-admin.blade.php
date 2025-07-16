@@ -84,12 +84,12 @@
             </div>
         </a>
 
-        <a href="/admin-chatbot" class="{{ Request::is('admin-chatbot') ? 'selected' : '' }}">
+        <!-- <a href="/admin-chatbot" class="{{ Request::is('admin-chatbot') ? 'selected' : '' }}">
             <div>
                 <img class="subject-image" src="{{ asset('icon/chat.png') }}" alt="Chatbot">
                 <p>Chatbot</p>
             </div>
-        </a>
+        </a> -->
         </div>
         <div class="section2">
 <form action="/logout" method="POST" onsubmit="return confirm('Are you sure you want to logout?');">
@@ -103,8 +103,8 @@
     </div>
 
     {{-- Botpress Scripts --}}
-    <script src="https://cdn.botpress.cloud/webchat/v3.0/inject.js"></script>
-    <script src="https://files.bpcontent.cloud/2025/07/10/04/20250710041832-ZAWIASSH.js"></script>
+    <!-- <script src="https://cdn.botpress.cloud/webchat/v3.0/inject.js"></script>
+    <script src="https://files.bpcontent.cloud/2025/07/10/04/20250710041832-ZAWIASSH.js"></script> -->
 
     {{-- Loader Script --}}
     <script>
