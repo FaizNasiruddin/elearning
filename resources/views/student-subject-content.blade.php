@@ -162,7 +162,8 @@
                            onclick="return confirm('Are you sure you want to start the quiz now?\nTime limit is {{ $quiz->time_limit }} minute{{ $quiz->time_limit > 1 ? 's' : '' }}.')"
                            style="color: green; font-weight: bold;">
                           Attempt Quiz
-                        </a>
+                        </a> 
+                        
                       @endif
                     </td>
                   </tr>
