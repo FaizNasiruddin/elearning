@@ -12,7 +12,16 @@
 }
 
 body {
-    background-color: rgb(83, 83, 83);
+  height: 100vh;
+  background-image: linear-gradient(rgba(3, 44, 38, 0.899), rgb(0, 50, 44)), url('../images/background (2).jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin: 0;
+}
+
+.background{
+     
 }
 
 .login-container {

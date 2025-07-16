@@ -11,7 +11,7 @@
 
     <div class="content">
         <div class="welcome">
-                <div>Selamat Datang! {{ $teacher->fullname}}</div>
+                <div>Welcome! {{ $teacher->fullname}}</div>
         </div>
         <div class="subject-list">
             @foreach ($subjects as $subject)

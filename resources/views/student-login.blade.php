@@ -9,11 +9,11 @@
 </head>
 <body>
     <?php
-        if(DB::connection()->getPdo()){
-                echo "connection ok";
-        }
+        // if(DB::connection()->getPdo()){
+        //         echo "connection ok";
+        // }
     ?>
-    <div class="login-container">
+ <div class="login-container">
         <div class="logo">
             <img src="{{ asset('icon/logo.png') }}" class="logo-image" src="media/logo.png">
             <div>
@@ -43,5 +43,6 @@
         </div>
         
     </div>
+   
 </body>
 </html>

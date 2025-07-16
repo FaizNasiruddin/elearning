@@ -9,9 +9,9 @@
 </head>
 <body>
     <?php
-        if(DB::connection()->getPdo()){
-                echo "connection ok";
-        }
+        // if(DB::connection()->getPdo()){
+        //         echo "connection ok";
+        // }
     ?>
     <div class="login-container">
         <div class="logo">
