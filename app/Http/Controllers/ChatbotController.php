@@ -9,8 +9,9 @@ use GuzzleHttp\Client;
 class ChatbotController extends Controller
 {
     public function showAdminChatbot(){
-       $botId = '31ec012b-3685-4b49-94a5-1072b83cd95f';
-       $pat = 'bp_pat_q0E8SvtxmjQH2vb3VhzPt4CvPXNNK8bCGUB6';
+       $botId = 'f3056edf-16a8-4ca0-8a3a-2db9624cfeef';
+            $kbId  = 'kb-f3ce8a2429';
+            $pat   = 'bp_pat_yadf1pJGmkuYblc5Elt7Lvp3T3fUX5DVLHy0';
 
     $client = new \GuzzleHttp\Client();
 
@@ -93,9 +94,9 @@ class ChatbotController extends Controller
             $file = $request->file('your_file_input');
             $client = new Client();
 
-            $botId = '31ec012b-3685-4b49-94a5-1072b83cd95f';
-            $kbId  = 'kb-0f0bb658c5';
-            $pat   = 'bp_pat_q0E8SvtxmjQH2vb3VhzPt4CvPXNNK8bCGUB6';
+            $botId = 'f3056edf-16a8-4ca0-8a3a-2db9624cfeef';
+            $kbId  = 'kb-f3ce8a2429';
+            $pat   = 'bp_pat_yadf1pJGmkuYblc5Elt7Lvp3T3fUX5DVLHy0';
 
             $fileName = $file->getClientOriginalName();
             $fileSize = $file->getSize();

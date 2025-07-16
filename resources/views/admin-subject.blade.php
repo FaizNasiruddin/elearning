@@ -90,7 +90,7 @@
                 <td>
                     <div style="background-color:{{ $subject->color }}; width:80%; height:20px;"></div>
                 </td>
-                <td>{{ \Carbon\Carbon::parse($subject->end_time)->format('d M Y h:i A') }}</td>
+                <td>{{ \Carbon\Carbon::parse($subject->created_at)->format('d M Y h:i A') }}</td>
                 <td class="buttonCol last-column">
                     <button class="viewbtn" onclick="window.location.href='/admin-subject-particular/{{ $subject->id }}'">View Student</button>
                     <button class="viewbtn" onclick="window.location.href='/admin-subject-content/{{ $subject->id }}'">View Content</button>
