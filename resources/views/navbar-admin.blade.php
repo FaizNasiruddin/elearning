@@ -103,8 +103,8 @@
     </div>
 
     {{-- Botpress Scripts --}}
-<script src="https://cdn.botpress.cloud/webchat/v3.0/inject.js"></script>
-<script src="https://files.bpcontent.cloud/2025/07/16/21/20250716215322-ALRRML93.js"></script>
+<!-- <script src="https://cdn.botpress.cloud/webchat/v3.0/inject.js"></script>
+<script src="https://files.bpcontent.cloud/2025/07/16/21/20250716215322-ALRRML93.js"></script> -->
 
     {{-- Loader Script --}}
     <script>

@@ -38,7 +38,7 @@
                     <button>Add Subject</button>
                 </form>
         </div> -->
-        <h1 class="title">Subject List</h1>
+        <h1 class="title">Subject Manager</h1>
         <div class="sort">
             <button onclick="location.href='/admin-subject-add'">Add Subject</button>
             <div>

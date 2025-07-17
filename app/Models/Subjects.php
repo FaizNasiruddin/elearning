@@ -16,7 +16,7 @@ class Subjects extends Model
         'form',
     ];
 
-    public $timestamps = false; // Optional, if you don't use created_at/updated_at
+    public $timestamps = true; // Optional, if you don't use created_at/updated_at
     // Optional: If you don’t have timestamps (created_at, updated_at)
     // public $timestamps = false;
 

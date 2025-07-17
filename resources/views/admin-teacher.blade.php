@@ -28,7 +28,7 @@
             </div>
             @endif
         </div> -->
-        <h1 class="title">Teacher List</h1>
+        <h1 class="title">Teacher Manager</h1>
         <div class="sort">
              <button onclick="location.href='/admin-teacher-add'">Add Teacher Account</button>
             <form method="GET" action="/admin-teacher" style="margin-bottom: 10px;">

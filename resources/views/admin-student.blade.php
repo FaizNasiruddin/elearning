@@ -41,7 +41,7 @@
             </div>
             @endif
         </div> -->
-        <h1 class="title">Student List</h1>
+        <h1 class="title">Student Manager</h1>
         <div class="sort">
             <button onclick="location.href='/admin-student-add'">Add Student Account</button>
             <div>

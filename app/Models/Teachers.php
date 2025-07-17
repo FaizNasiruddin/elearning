@@ -14,9 +14,8 @@ class Teachers extends Authenticatable
         'fullname',
         'username',
         'password',
-        'created_at',
     ];
 
-    public $timestamps = false;
+    public $timestamps = true;
 
 }

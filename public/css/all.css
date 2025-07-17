@@ -493,6 +493,8 @@ td {
 
   .navbar p{
     display: none;
+    position: fixed;
+
   }
 
   .navbar .section1{
