@@ -446,6 +446,11 @@ td {
     margin-bottom: 0.5rem;
   }
 
+  .add .tajuk{
+    color: red;
+    background-color: gray;
+  }
+
   body,
   td,
   th,

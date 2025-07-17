@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Subject Content</title>
     <link rel="stylesheet" href="{{ asset('css/all.css') }}">
+    <style>
+        button.selected {
+            background-color: var(--third-color);
+        }
+    </style>
 </head>
 <body>
     @if(session('role') === 'teacher')
@@ -18,8 +23,8 @@
 
         <div class="sort">
             <div>
-                <button type="button" onclick="showTable('attendance')">Attendances</button>
-                <button type="button" onclick="showTable('quiz')">Quizzes</button>
+                <button type="button" id="attendanceBtn" onclick="showTable('attendance')">Attendances</button>
+                <button type="button" id="quizBtn" onclick="showTable('quiz')">Quizzes</button>
             </div>
 
             <div>
@@ -113,6 +118,9 @@
             const quiz = document.getElementById('quizTable');
             const tableTypeInput = document.getElementById('tableType');
 
+            const attendanceBtn = document.getElementById('attendanceBtn');
+            const quizBtn = document.getElementById('quizBtn');
+
             if (tableTypeInput) {
                 tableTypeInput.value = type;
             }
@@ -120,12 +128,19 @@
             if (type === 'attendance') {
                 attendance.style.display = 'block';
                 quiz.style.display = 'none';
+
+                attendanceBtn.classList.add('selected');
+                quizBtn.classList.remove('selected');
             } else {
                 attendance.style.display = 'none';
                 quiz.style.display = 'block';
+
+                attendanceBtn.classList.remove('selected');
+                quizBtn.classList.add('selected');
             }
         }
 
+        // Auto-select the correct button on page load
         document.addEventListener("DOMContentLoaded", () => {
             const params = new URLSearchParams(window.location.search);
             const type = params.get("type") || 'attendance';

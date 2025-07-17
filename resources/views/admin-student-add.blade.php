@@ -11,6 +11,8 @@
 
     <div class="content">
  <div class="add">
+    <p style="font-size:20px; color:gray">Add Student Account</p>
+    <br>
         <form action="/registerStudent" method="POST">
             @csrf
             <input type="text" placeholder="Name" name="fullname">

@@ -12,6 +12,8 @@
 
     <div class="content">
         <div class="add">
+               <p style="font-size:20px; color:gray">Edit Subject</p>
+<br>
                 <form action="/updateSubject" method="POST">
                     @csrf
                     <input type="hidden" name="subject_id" value="{{ $subject->id }}">

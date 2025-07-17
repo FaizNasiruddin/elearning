@@ -11,6 +11,7 @@
     @include('navbar-admin')
     <div class="content">
  <div class="add">
+    <p style="font-size:20px; color:gray">Update Student Account</p>
         <form action="/updateStudent" method="POST">
             @csrf
             <input type="hidden" name="student_id" value="{{ $student->id }}">

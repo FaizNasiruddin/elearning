@@ -11,6 +11,7 @@
      @include('navbar-admin')
      <div class="content">
         <div class="add">
+    <p style="font-size:20px; color:gray">Add Teacher Account</p>
                 <form action="/registerTeacher" method="POST">
                     @csrf
                     <input type="text" placeholder="Full Name" name="fullname"><br>

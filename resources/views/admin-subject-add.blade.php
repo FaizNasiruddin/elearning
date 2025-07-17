@@ -11,6 +11,8 @@
 
     <div class="content">
         <div class="add">
+    <p style="font-size:20px; color:gray">Add Subject</p>
+<br>
                 <form action="/addSubject" method="POST">
                     @csrf
                     <input type="text" name="subjectname" placeholder="Subject Name" value="{{ old('subjectname') }}">
