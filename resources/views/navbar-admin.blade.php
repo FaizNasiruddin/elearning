@@ -77,12 +77,12 @@
             </div>
         </a>
 
-        <!-- <a href="/admin-content" class="{{ Request::is('admin-content') ? 'selected' : '' }}">
+        <a href="/admin-content" class="{{ Request::is('admin-content') ? 'selected' : '' }}">
             <div>
                 <img class="subject-image" src="{{ asset('icon/content.png') }}" alt="Content">
                 <p>Content</p>
             </div>
-        </a> -->
+        </a>
 
         <!-- <a href="/admin-chatbot" class="{{ Request::is('admin-chatbot') ? 'selected' : '' }}">
             <div>
