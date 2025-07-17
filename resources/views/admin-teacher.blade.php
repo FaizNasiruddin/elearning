@@ -42,31 +42,38 @@
             </form>
         </div>
         <br>
-        <table>
+        @if ($teachers->isNotEmpty())
+    <table>
+        <tr>
+            <th>Full Name</th>
+            <th>IC Number</th>
+            <th>Password</th>
+            <th>Created at</th>
+            <th></th>
+        </tr>
+        @foreach ($teachers as $teacher)
             <tr>
-                <th>Full Name</th>
-                <th>IC Number</th>
-                <th>Password</th>
-                <th>Created at</th>
-                <th></th>
+                <td>{{ $teacher->fullname }}</td>
+                <td>{{ $teacher->username }}</td>
+                <td>{{ $teacher->password }}</td>
+                <td>{{ \Carbon\Carbon::parse($teacher->created_at)->format('d-m-Y h:i A') }}</td>
+                <td class="buttonCol last-column">
+                    <a class="editbtn" href="/admin-teacher-edit/{{ $teacher->id }}" onclick="event.stopPropagation();"></a>
+                    <form method="POST" action="/deleteTeacher">
+                        @csrf
+                        <input type="hidden" name="teacher_id" value="{{ $teacher->id }}">
+                        <button class="deletebtn" type="submit" onclick="return confirm('Are you sure you want to delete this user?')"></button>
+                    </form>
+                </td>
             </tr>
-            @foreach ($teachers as $teacher)
-                <tr>
-                    <td>{{ $teacher->fullname }}</td>
-                    <td>{{ $teacher->username }}</td>
-                    <td>{{ $teacher->password }}</td>
-                   <td>{{ \Carbon\Carbon::parse($teacher->created_at)->format('d-m-Y h:i A') }}</td>
-                    <td class="buttonCol last-column">
-                        <a class="editbtn" href="/admin-teacher-edit/{{ $teacher->id }}" onclick="event.stopPropagation();"></a>
-                        <form method="POST" action="/deleteTeacher">
-                            @csrf
-                            <input type="hidden" name="teacher_id" value="{{ $teacher->id }}">
-                            <button class="deletebtn" type="submit" onclick="return confirm('Are you sure you want to delete this user?')"></button>
-                        </form>
-                    </td>
-                </tr>
-            @endforeach
-        </table>
+        @endforeach
+    </table>
+@else
+    <div class="alert alert-noti">
+        No teacher available.
+    </div>
+@endif
+
     </div>
 </body>
 </html>
