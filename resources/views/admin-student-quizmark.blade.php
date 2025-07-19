@@ -52,9 +52,13 @@
                                         <span style="color: red; font-weight: bold;">Not Attempted</span>
                                     @endif
                                 </td>
-                               <td>
-    {{ \Carbon\Carbon::parse($mark->created_at)->format('d M Y h:i A') }}
-</td>
+                                <td>
+                                    @if ($mark && $mark->created_at)
+                                        {{ \Carbon\Carbon::parse($mark->created_at)->format('d M Y h:i A') }}
+                                    @else
+                                        —
+                                    @endif
+                                </td>
                                 <td>
                                     @if ($mark)
                                         {{ $mark->score }} / {{ $mark->total_questions }}
