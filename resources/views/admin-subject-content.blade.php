@@ -88,7 +88,7 @@
                         <button  type="submit">Upload File</button>
                     </form>
                     <br>
-                </div>d
+                </div>
 
                         @if (session('success2'))
                         <div class="alert alert-success">
@@ -129,7 +129,6 @@
             <div class="quiz">
                 <div class="contents-add">
                     <button type="button" onclick="window.location.href='/admin-quiz/{{ $subject->id }}'">Add Quiz</button>
-                   
                 </div>
 
                  @if (session('success'))
