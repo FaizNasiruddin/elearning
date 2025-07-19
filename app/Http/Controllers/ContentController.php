@@ -261,7 +261,7 @@ public function addAttendance(Request $request)
             'ticked_at' => now(),
         ]);
 
-        return redirect()->back()->with('success', 'Attendance marked successfully!');
+        return redirect()->back()->with('success1', 'Attendance marked successfully!');
     }
 
     public function showStudentContent(Request $request)

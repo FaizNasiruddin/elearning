@@ -127,7 +127,6 @@
                 <th colspan="3" style="text-align:center;">
                   Quiz
                   <br>
-                  <br>
                     @if (session('success'))
                     <p class="alert alert-success">
                         {{ session('success') }}

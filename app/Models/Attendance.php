@@ -25,7 +25,7 @@ class Attendance extends Model
     ];
 
     // Disable timestamps if you are not using created_at / updated_at columns
-    public $timestamps = false;
+    public $timestamps = true;
 
     public function subject()
     {
