@@ -61,9 +61,15 @@
                             <td>{{ \Carbon\Carbon::parse($attendance->start_time)->format('d M Y h:i A') }}</td>
                             <td>{{ \Carbon\Carbon::parse($attendance->due_time)->format('d M Y h:i A') }}</td>
                             <td class="last-column">
-                                <button class="viewbtn"  onclick="location.href='/admin-student-attendance/{{ $attendance->id }}/{{ $attendance->subject->id }}'">
-                                    View Student Attendance
-                                </button>
+                                @if ($attendance->subject)
+                                    <button class="viewbtn" onclick="location.href='/admin-student-attendance/{{ $attendance->id }}/{{ $attendance->subject->id }}'">
+                                        View Student Attendance
+                                    </button>
+                                @else
+                                    <button class="viewbtn" disabled title="Subject not found">
+                                        View Student Attendance
+                                    </button>
+                                @endif
                             </td>
                         </tr>
                     @empty
