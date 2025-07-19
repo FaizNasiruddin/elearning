@@ -88,7 +88,7 @@
                         <button  type="submit">Upload File</button>
                     </form>
                     <br>
-                </div>
+                </div>d
 
                         @if (session('success2'))
                         <div class="alert alert-success">

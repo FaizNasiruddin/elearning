@@ -1,78 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    {{-- <link rel="stylesheet" href="{{ asset('css/admin-student.css') }}"> --}}
-    <link rel="stylesheet" href="{{ asset('css/all.css') }}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Manager</title>
+  <link rel="stylesheet" href="{{ asset('css/all.css') }}">
+  <style>
+    .masked {
+        font-family: 'password';
+        -webkit-text-security: disc;
+        text-security: disc;
+    }
+
+    .toggle-visibility {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        margin-left: 5px;
+    }
+
+    .toggle-visibility img {
+        width: 20px;
+        height: 20px;
+    }
+  </style>
 </head>
 <body>
-    @include('navbar-admin')
-    <div class="content">
-        <h1 class="title">Student Manager</h1>
-        <div class="sort">
-            <button onclick="location.href='/admin-student-add'">Add Student Account</button>
-            <div>
-                <form method="GET" action="/admin-student" style="margin-bottom: 10px;">
-                    <label for="filterForm">Filter by Form:</label>
-                    <select class="formInput" class="formInput" name="form" id="filterForm" onchange="this.form.submit()">
-                        <option value="">All</option>
-                        <option value="1" {{ request('form') == '1' ? 'selected' : '' }}>Form 1</option>
-                        <option value="2" {{ request('form') == '2' ? 'selected' : '' }}>Form 2</option>
-                        <option value="3" {{ request('form') == '3' ? 'selected' : '' }}>Form 3</option>
-                        <option value="4" {{ request('form') == '4' ? 'selected' : '' }}>Form 4</option>
-                        <option value="5" {{ request('form') == '5' ? 'selected' : '' }}>Form 5</option>
-                    </select>
+  @include('navbar-admin')
+  <div class="content">
+    <h1 class="title">Student Manager</h1>
+    <div class="sort">
+      <button onclick="location.href='/admin-student-add'">Add Student Account</button>
+      <div>
+        <form method="GET" action="/admin-student" style="margin-bottom: 10px;">
+          <label for="filterForm">Filter by Form:</label>
+          <select class="formInput" name="form" id="filterForm" onchange="this.form.submit()">
+            <option value="">All</option>
+            <option value="1" {{ request('form') == '1' ? 'selected' : '' }}>Form 1</option>
+            <option value="2" {{ request('form') == '2' ? 'selected' : '' }}>Form 2</option>
+            <option value="3" {{ request('form') == '3' ? 'selected' : '' }}>Form 3</option>
+            <option value="4" {{ request('form') == '4' ? 'selected' : '' }}>Form 4</option>
+            <option value="5" {{ request('form') == '5' ? 'selected' : '' }}>Form 5</option>
+          </select>
 
-                    <!-- Sorting dropdown -->
-                    <label for="sort">Sort by:</label>
-                    <select class="formInput" class="formInput" name="sort" id="sort" onchange="this.form.submit()">
-                        <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>Latest (Newest First)</option>
-                        <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>Oldest (Oldest First)</option>
-                        <option value="asc" {{ request('sort') == 'asc' ? 'selected' : '' }}>Username A-Z</option>
-                        <option value="desc" {{ request('sort') == 'desc' ? 'selected' : '' }}>Username Z-A</option>
-                    </select>
-                </form>
-            </div>
-            
-        </div>
-        <br>
-      @if ($students->isNotEmpty())
+          <label for="sort">Sort by:</label>
+          <select class="formInput" name="sort" id="sort" onchange="this.form.submit()">
+            <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>Latest</option>
+            <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>Oldest</option>
+            <option value="asc" {{ request('sort') == 'asc' ? 'selected' : '' }}>Username A-Z</option>
+            <option value="desc" {{ request('sort') == 'desc' ? 'selected' : '' }}>Username Z-A</option>
+          </select>
+        </form>
+      </div>
+    </div>
+    <br>
+
+    @if ($students->isNotEmpty())
     <table>
-        <tr>
-            <th>Full Name</th>
-            <th>IC Number</th>
-            <th>Password</th>
-            <th>Form</th>
-            <th>Created at</th>
-            <th></th>
-        </tr>
-        @foreach ($students as $student)
-            <tr>
-                <td>{{ $student->fullname }}</td>
-                <td>{{ $student->username }}</td>
-                <td>{{ $student->password }}</td>
-                <td>{{ $student->form }}</td>
-                <td>{{ \Carbon\Carbon::parse($student->created_at)->format('d-m-Y h:i A') }}</td>
-                <td class="buttonCol last-column" data-label="Delete">
-                    <a class="editbtn" href="/admin-student-edit/{{ $student->id }}" onclick="event.stopPropagation();"></a>
-                    <form method="POST" action="/deleteStudent">
-                        @csrf
-                        <input type="hidden" name="studentid" value="{{ $student->id }}">
-                        <button class="deletebtn" type="submit" onclick="return confirm('Are you sure you want to delete this user?')"></button>
-                    </form>
-                </td>
-            </tr>
-        @endforeach
+      <tr>
+        <th>Full Name</th>
+        <th>IC Number</th>
+        <th>Password</th>
+        <th>Form</th>
+        <th>Created at</th>
+        <th></th>
+      </tr>
+      @foreach ($students as $student)
+      <tr>
+        <td>{{ $student->fullname }}</td>
+        <td>
+          <span class="masked">{{ $student->username }}</span>
+          <button class="toggle-visibility" onclick="toggleVisibility(this)">
+            <img src="{{ asset('icon/eye-close.png') }}" alt="Toggle Username">
+          </button>
+        </td>
+        <td>
+          <span class="masked">{{ $student->password }}</span>
+          <button class="toggle-visibility" onclick="toggleVisibility(this)">
+            <img src="{{ asset('icon/eye-close.png') }}" alt="Toggle Password">
+          </button>
+        </td>
+        <td>{{ $student->form }}</td>
+        <td>{{ \Carbon\Carbon::parse($student->created_at)->format('d-m-Y h:i A') }}</td>
+        <td class="buttonCol last-column" data-label="Delete">
+          <a class="editbtn" href="/admin-student-edit/{{ $student->id }}" onclick="event.stopPropagation();"></a>
+          <form method="POST" action="/deleteStudent">
+            @csrf
+            <input type="hidden" name="studentid" value="{{ $student->id }}">
+            <button class="deletebtn" type="submit" onclick="return confirm('Are you sure you want to delete this user?')"></button>
+          </form>
+        </td>
+      </tr>
+      @endforeach
     </table>
-@else
+    @else
     <div class="alert alert-noti">
-        No student available.
+      No student available.
     </div>
-@endif
+    @endif
+  </div>
 
-    </div>
+  <script>
+    function toggleVisibility(button) {
+      const span = button.previousElementSibling;
+      const img = button.querySelector('img');
+      const isMasked = span.classList.contains('masked');
 
+      if (isMasked) {
+        span.classList.remove('masked');
+        img.src = "{{ asset('icon/eye-open.png') }}";
+      } else {
+        span.classList.add('masked');
+        img.src = "{{ asset('icon/eye-close.png') }}";
+      }
+    }
+  </script>
 </body>
 </html>
