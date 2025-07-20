@@ -68,7 +68,7 @@
                                 @else
                                     <button class="viewbtn" disabled title="Subject not found">
                                         View Student Attendance
-                                    </button>
+                                    </button>m
                                 @endif
                             </td>
                         </tr>

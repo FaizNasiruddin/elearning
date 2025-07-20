@@ -284,15 +284,46 @@ public function addAttendance(Request $request)
     return view('admin-content', compact('attendances', 'quizzes'));
 }
 
+   
 
-    public function showTeacherContent()
+
+
+    public function showTeacherContent(Request $request)
     {
-    // ✅ Block access if not logged in as admin
         if (!session()->has('user') || !in_array(session('role'), ['admin', 'teacher'])) {
             return redirect('/')->with('error', 'Access denied. Please login.');
         }
-        $attendances = Attendance::with('subject')->get(); // Load all attendances with their related subject
-        $quizzes = Quizzes::with('subject')->get();        // Load all quizzes with their related subject
+
+        $sort = $request->query('sort', 'latest'); // default to latest if not specified
+
+        $isTeacher = session('role') === 'teacher';
+
+        // Fix: session('user') returns an ID, not an object
+        $teacherId = $isTeacher ? session('user') : null;
+
+        // Base queries with subject relationship
+        $attendanceQuery = Attendance::with('subject');
+        $quizQuery = Quizzes::with('subject');
+
+        // If teacher, filter only their subjects
+        if ($isTeacher) {
+            $attendanceQuery->whereHas('subject', function ($query) use ($teacherId) {
+                $query->where('teacher_id', $teacherId);
+            });
+
+            $quizQuery->whereHas('subject', function ($query) use ($teacherId) {
+                $query->where('teacher_id', $teacherId);
+            });
+        }
+
+        // Apply sorting
+        if ($sort === 'oldest') {
+            $attendances = $attendanceQuery->orderBy('start_time', 'asc')->get();
+            $quizzes = $quizQuery->orderBy('created_at', 'asc')->get();
+        } else {
+            $attendances = $attendanceQuery->orderBy('start_time', 'desc')->get();
+            $quizzes = $quizQuery->orderBy('created_at', 'desc')->get();
+        }
 
         return view('admin-content', compact('attendances', 'quizzes'));
     }
