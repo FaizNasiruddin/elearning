@@ -305,6 +305,11 @@ table {
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
+.table-scroll {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
 .buttonCol {
   justify-content: space-around;
 }

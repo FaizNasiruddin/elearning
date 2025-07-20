@@ -43,9 +43,8 @@
             <button onclick="location.href='/admin-subject-add'">Add Subject</button>
             <div>
                 <form method="GET" action="/admin-subject" style="margin-bottom: 10px;">
-                    <label for="filterForm">Filter by Form:</label>
                     <select class="formInput" name="form" id="filterForm" onchange="this.form.submit()">
-                        <option value="">All</option>
+                        <option value="">All form</option>
                         <option value="1" {{ request('form') == '1' ? 'selected' : '' }}>Form 1</option>
                         <option value="2" {{ request('form') == '2' ? 'selected' : '' }}>Form 2</option>
                         <option value="3" {{ request('form') == '3' ? 'selected' : '' }}>Form 3</option>
@@ -54,10 +53,9 @@
                     </select>
 
                     <!-- Sorting dropdown -->
-                    <label for="sort">Sort by:</label>
                     <select class="formInput" name="sort" id="sort" onchange="this.form.submit()">
-                        <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>Latest (Newest First)</option>
-                        <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>Oldest (Oldest First)</option>
+                        <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>Latest</option>
+                        <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>Oldest</option>
                         <option value="asc" {{ request('sort') == 'asc' ? 'selected' : '' }}>Username A-Z</option>
                         <option value="desc" {{ request('sort') == 'desc' ? 'selected' : '' }}>Username Z-A</option>
                     </select>
@@ -68,7 +66,8 @@
         @if ($subjects->isEmpty())
     <p class="alert alert-noti">No subjects available.</p>
 @else
-    <table>
+<div class="table-scroll">
+     <table>
         <tr>
             <th>Name</th>
             <th>Form</th>
@@ -104,6 +103,8 @@
             </tr>   
         @endforeach
     </table>
+</div>
+   
 @endif
     </div>
 </body>

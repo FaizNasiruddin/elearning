@@ -29,10 +29,9 @@
 
             <div>
                 <form method="GET" action="/admin-content" style="margin-bottom: 10px;">
-                    <label for="sort">Sort by:</label>
                     <select class="formInput" name="sort" id="sort" onchange="this.form.submit()">
-                        <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>Latest (Newest First)</option>
-                        <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>Oldest (Oldest First)</option>
+                        <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>Latest</option>
+                        <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>Oldest</option>
                     </select>
                     <input type="hidden" name="type" id="tableType" value="{{ request('type', 'attendance') }}">
                 </form>
@@ -43,7 +42,8 @@
 
         <!-- Attendance Table -->
         <div id="attendanceTable">
-            <table>
+            <div class="table-scroll">
+                 <table>
                 <thead>
                     <tr>
                         <th>Subject</th>
@@ -79,11 +79,13 @@
                     @endforelse
                 </tbody>
             </table>
+            </div>
         </div>
 
         <!-- Quiz Table -->
         <div id="quizTable" style="display: none;">
-            <table>
+            <div class="table-scroll">
+                <table>
                 <thead>
                     <tr>
                         <th>Subject</th>
@@ -115,6 +117,7 @@
                     @endforelse
                 </tbody>
             </table>
+            </div>
         </div>
     </div>
 

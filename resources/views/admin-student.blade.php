@@ -6,12 +6,6 @@
   <title>Student Manager</title>
   <link rel="stylesheet" href="{{ asset('css/all.css') }}">
   <style>
-    .masked {
-        font-family: 'password';
-        -webkit-text-security: disc;
-        text-security: disc;
-    }
-
     .toggle-visibility {
         background: none;
         border: none;
@@ -24,6 +18,21 @@
         width: 20px;
         height: 20px;
     }
+
+    .table-scroll {
+        overflow-x: auto;
+        max-width: 100%;
+    }
+
+    .table-scroll table {
+        width: 100%;
+        min-width: 700px;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        white-space: nowrap;
+    }
   </style>
 </head>
 <body>
@@ -34,9 +43,8 @@
       <button onclick="location.href='/admin-student-add'">Add Student Account</button>
       <div>
         <form method="GET" action="/admin-student" style="margin-bottom: 10px;">
-          <label for="filterForm">Filter by Form:</label>
           <select class="formInput" name="form" id="filterForm" onchange="this.form.submit()">
-            <option value="">All</option>
+            <option value="">All form</option>
             <option value="1" {{ request('form') == '1' ? 'selected' : '' }}>Form 1</option>
             <option value="2" {{ request('form') == '2' ? 'selected' : '' }}>Form 2</option>
             <option value="3" {{ request('form') == '3' ? 'selected' : '' }}>Form 3</option>
@@ -44,7 +52,6 @@
             <option value="5" {{ request('form') == '5' ? 'selected' : '' }}>Form 5</option>
           </select>
 
-          <label for="sort">Sort by:</label>
           <select class="formInput" name="sort" id="sort" onchange="this.form.submit()">
             <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>Latest</option>
             <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>Oldest</option>
@@ -57,43 +64,45 @@
     <br>
 
     @if ($students->isNotEmpty())
-    <table>
-      <tr>
-        <th>Full Name</th>
-        <th>IC Number</th>
-        <th>Password</th>
-        <th>Form</th>
-        <th>Created at</th>
-        <th></th>
-      </tr>
-      @foreach ($students as $student)
-      <tr>
-        <td>{{ $student->fullname }}</td>
-        <td>
-          <span class="masked">{{ $student->username }}</span>
-          <button class="toggle-visibility" onclick="toggleVisibility(this)">
-            <img src="{{ asset('icon/eye-close.png') }}" alt="Toggle Username">
-          </button>
-        </td>
-        <td>
-          <span class="masked">{{ $student->password }}</span>
-          <button class="toggle-visibility" onclick="toggleVisibility(this)">
-            <img src="{{ asset('icon/eye-close.png') }}" alt="Toggle Password">
-          </button>
-        </td>
-        <td>{{ $student->form }}</td>
-        <td>{{ \Carbon\Carbon::parse($student->created_at)->format('d-m-Y h:i A') }}</td>
-        <td class="buttonCol last-column" data-label="Delete">
-          <a class="editbtn" href="/admin-student-edit/{{ $student->id }}" onclick="event.stopPropagation();"></a>
-          <form method="POST" action="/deleteStudent">
-            @csrf
-            <input type="hidden" name="studentid" value="{{ $student->id }}">
-            <button class="deletebtn" type="submit" onclick="return confirm('Are you sure you want to delete this user?')"></button>
-          </form>
-        </td>
-      </tr>
-      @endforeach
-    </table>
+    <div class="table-scroll">
+      <table>
+        <tr>
+          <th>Full Name</th>
+          <th>IC Number</th>
+          <th>Password</th>
+          <th>Form</th>
+          <th>Created at</th>
+          <th></th>
+        </tr>
+        @foreach ($students as $student)
+        <tr>
+          <td>{{ $student->fullname }}</td>
+          <td>
+            <span class="masked" data-value="{{ $student->username }}">•••••</span>
+            <button class="toggle-visibility" onclick="toggleVisibility(this)">
+              <img src="{{ asset('icon/eye-close.png') }}" alt="Toggle Username">
+            </button>
+          </td>
+          <td>
+            <span class="masked" data-value="{{ $student->password }}">•••••</span>
+            <button class="toggle-visibility" onclick="toggleVisibility(this)">
+              <img src="{{ asset('icon/eye-close.png') }}" alt="Toggle Password">
+            </button>
+          </td>
+          <td>{{ $student->form }}</td>
+          <td>{{ \Carbon\Carbon::parse($student->created_at)->format('d-m-Y h:i A') }}</td>
+          <td class="buttonCol last-column" data-label="Delete">
+            <a class="editbtn" href="/admin-student-edit/{{ $student->id }}" onclick="event.stopPropagation();"></a>
+            <form method="POST" action="/deleteStudent">
+              @csrf
+              <input type="hidden" name="studentid" value="{{ $student->id }}">
+              <button class="deletebtn" type="submit" onclick="return confirm('Are you sure you want to delete this user?')"></button>
+            </form>
+          </td>
+        </tr>
+        @endforeach
+      </table>
+    </div>
     @else
     <div class="alert alert-noti">
       No student available.
@@ -108,9 +117,11 @@
       const isMasked = span.classList.contains('masked');
 
       if (isMasked) {
+        span.textContent = span.getAttribute('data-value');
         span.classList.remove('masked');
         img.src = "{{ asset('icon/eye-open.png') }}";
       } else {
+        span.textContent = '•••••';
         span.classList.add('masked');
         img.src = "{{ asset('icon/eye-close.png') }}";
       }
