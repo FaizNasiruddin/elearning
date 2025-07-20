@@ -83,6 +83,7 @@ Route::post('/submitQuiz', [QuizController::class, 'submitQuiz']);
 Route::post('/deleteFile', [ContentController::class, 'deleteFile']);
 Route::post('/logout', [AuthController::class, 'logout']);
 Route::post('/uploadFileChatbot', [ChatbotController::class, 'uploadFileChatbot']);
+Route::post('/uploadURL',[ChatbotController::class, 'uploadURL']);
 Route::delete('/deleteKnowledgeBase/{id}', [ChatbotController::class, 'deleteFileChatbot']);
 
 

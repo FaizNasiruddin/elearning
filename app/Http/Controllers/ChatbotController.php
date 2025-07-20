@@ -131,11 +131,12 @@ class ChatbotController extends Controller
                 ],
             ]);
 
-            return response()->json([
-                'success'  => true,
-                'message'  => 'File uploaded and linked to Botpress Knowledge Base!',
-                'filename' => $fileName
-            ]);
+            // return response()->json([
+            //     'success'  => true,
+            //     'message'  => 'File uploaded and linked to Botpress Knowledge Base!',
+            //     'filename' => $fileName
+            // ]);
+             return back()->with('success', 'File uploaded successfully!');
         }
 
     public function deleteFileChatbot($id)
@@ -157,5 +158,4 @@ class ChatbotController extends Controller
 
         return back()->with('success', 'File deleted successfully!');
     }
-
 }

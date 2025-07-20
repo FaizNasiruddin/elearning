@@ -20,11 +20,14 @@
             <button type="submit">Upload</button>
         </form>
        <br>
+         @if(session('success'))
+    <p class="alert alert-success">{{ session('success') }}</p>
+@endif
        @php
             use Illuminate\Support\Str;
 
             $kbId = 'kb-f3ce8a2429';
-            $allowedExtensions = ['.pdf', '.txt', '.xls', '.xlsx'];
+            $allowedExtensions = ['.pdf', '.txt', '.xls', '.xlsx', '.doc','docx'];
 
             $uploadedFiles = collect($files)->filter(function ($file) use ($kbId, $allowedExtensions) {
                 if (!isset($file['tags']['kbId']) || $file['tags']['kbId'] !== $kbId) {
@@ -74,15 +77,20 @@
         @else
             <p>No PDF, TXT, or Excel files uploaded.</p>
         @endif
-        @if(session('success'))
-    <p style="color: green">{{ session('success') }}</p>
-@endif
+        <br>
+      
 
 @if(session('error'))
     <p style="color: red">{{ session('error') }}</p>
 @endif
 
 <br>
+ <a 
+  href="https://sso.botpress.cloud/login" 
+  target="_blank" 
+  style="display: inline-block; padding: 10px 20px; background-color: #1e40af; color: #fff; text-decoration: none; border-radius: 5px;">
+  Open Knowledge Base in Botpress Studio
+</a>
     </div>
 
    
