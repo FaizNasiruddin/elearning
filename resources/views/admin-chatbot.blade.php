@@ -83,12 +83,6 @@
 @endif
 
 <br>
- <a 
-  href="https://studio.botpress.cloud/f3056edf-16a8-4ca0-8a3a-2db9624cfeef/kb/kb-f3ce8a2429" 
-  target="_blank" 
-  style="display: inline-block; padding: 10px 20px; background-color: #1e40af; color: #fff; text-decoration: none; border-radius: 5px;">
-  Open Knowledge Base in Botpress Studio
-</a>
     </div>
 
    
