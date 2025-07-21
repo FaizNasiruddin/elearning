@@ -1,155 +1,91 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 use GuzzleHttp\Client;
 
 class ChatbotController extends Controller
 {
-    public function showAdminChatbot(){
-       $botId = 'f3056edf-16a8-4ca0-8a3a-2db9624cfeef';
-            $kbId  = 'kb-f3ce8a2429';
-            $pat   = 'bp_pat_yadf1pJGmkuYblc5Elt7Lvp3T3fUX5DVLHy0';
+    private $botId;
+    private $kbId;
+    private $pat;
+    private $client;
 
-    $client = new \GuzzleHttp\Client();
+    public function __construct()
+    {
+        // $this->botId = '55708be4-1cf5-4261-b3b1-6b2f262335cb';
+        // $this->kbId  = 'kb-e6698ed6fb';
+        // $this->pat   = 'bp_pat_DhPOD9WA2RNlmeOaEA90jWSkZvFYMzebTtvJ';
 
-    try {
-        $response = $client->request('GET', 'https://api.botpress.cloud/v1/files', [
+        $this->botId = 'f3056edf-16a8-4ca0-8a3a-2db9624cfeef';
+        $this->kbId  = 'kb-f3ce8a2429';
+        $this->pat   = 'bp_pat_yadf1pJGmkuYblc5Elt7Lvp3T3fUX5DVLHy0';
+        $this->client = new Client();
+    }
+
+    public function showAdminChatbot()
+    {
+        try {
+            $response = $this->client->request('GET', 'https://api.botpress.cloud/v1/files', [
+                'headers' => [
+                    'x-bot-id' => $this->botId,
+                    'Authorization' => 'Bearer ' . $this->pat,
+                    'Accept' => 'application/json',
+                ],
+            ]);
+
+            $files = json_decode($response->getBody(), true);
+        } catch (\Exception $e) {
+            $files = ['error' => 'Unable to fetch files from Botpress.'];
+        }
+
+        return view('admin-chatbot', [
+            'files' => $files['files'] ?? [],
+        ]);
+    }
+
+    public function uploadFileChatbot(Request $request)
+    {
+        $file = $request->file('your_file_input');
+        $fileName = $file->getClientOriginalName();
+        $fileSize = $file->getSize();
+
+        $response = $this->client->request('PUT', 'https://api.botpress.cloud/v1/files', [
             'headers' => [
-                'x-bot-id'      => $botId,
-                'Authorization' => 'Bearer ' . $pat,
-                'Accept'        => 'application/json',
+                'x-bot-id' => $this->botId,
+                'Authorization' => 'Bearer ' . $this->pat,
+                'Content-Type' => 'application/json',
             ],
+            'body' => json_encode([
+                'key' => 'kb-' . $this->kbId . '/' . $fileName,
+                'size' => $fileSize,
+                'index' => true,
+                'tags' => [
+                    'source' => 'knowledge-base',
+                    'kbId' => $this->kbId,
+                    'title' => pathinfo($fileName, PATHINFO_FILENAME),
+                ]
+            ]),
         ]);
 
-        $files = json_decode($response->getBody(), true);
-    } catch (\Exception $e) {
-        $files = ['error' => 'Unable to fetch files from Botpress.'];
+        $result = json_decode($response->getBody(), true);
+        $uploadUrl = $result['file']['uploadUrl'];
+
+        $this->client->request('PUT', $uploadUrl, [
+            'body' => file_get_contents($file->getPathname()),
+            'headers' => ['Content-Type' => 'application/octet-stream'],
+        ]);
+
+        return back()->with('success', 'File uploaded successfully!');
     }
-
-    return view('admin-chatbot', [
-        'files' => $files['files'] ?? [],
-    ]);
-    }
-
-    // public function uploadFileChatbot(Request $request)
-    // {
-    //    $file = $request->file('your_file_input'); 
-    //     $client = new Client(); 
-    //     $response = $client->request('PUT', 'https://api.botpress.cloud/v1/bots/31ec012b-3685-4b49-94a5-1072b83cd95f/knowledge/files', [ 
-    //         'headers' => [ 
-    //             'Authorization' => 'Bearer bp_pat_WRXk7pXePD2apnQ6jD82S5IMEFHZab2tmMiE', 
-    //             'Accept'        => 'application/json', 
-    //         ], 
-    //         'multipart' => [ 
-    //             [ 
-    //                 'name'     => 'file', 
-    //                 'contents' => fopen($file->getPathname(), 'r'), 
-    //                 'filename' => $file->getClientOriginalName(), 
-    //             ], 
-    //         ], 
-    //     ]); 
-    //     return json_decode($response->getBody(), true); 
-
-
-    //     $file = $request->file('your_file_input'); 
-    //     $client = new Client(); 
-    
-    //     // Step 1: Create the file in Botpress and get the upload URL 
-    //     $botId = '31ec012b-3685-4b49-94a5-1072b83cd95f'; 
-    //     $pat = 'bp_pat_q0E8SvtxmjQH2vb3VhzPt4CvPXNNK8bCGUB6'; 
-    //     $fileName = $file->getClientOriginalName(); 
-    //     $fileSize = $file->getSize(); 
-    
-    //     $response = $client->request('PUT', 'https://api.botpress.cloud/v1/files', [ 
-    //         'headers' => [ 
-    //             'x-bot-id' => $botId, 
-    //             'Authorization' => 'Bearer ' . $pat, 
-    //             'Content-Type' => 'application/json', 
-    //         ], 
-    //         'body' => json_encode([ 
-    //             'key' => $fileName, 
-    //             'size' => $fileSize, 
-    //             'index' => true // Set to true to index for Knowledge Base 
-    //         ]), 
-    //     ]); 
-    
-    //     $result = json_decode($response->getBody(), true); 
-    //     $uploadUrl = $result['file']['uploadUrl']; 
-
-    //     // Step 2: Upload the file content to the uploadUrl 
-    //     $client->request('PUT', $uploadUrl, [ 
-    // 'body' => file_get_contents($file->getPathname()), 
-    // 'headers' => [ 
-    //     'Content-Type' => 'application/octet-stream', 
-    // ], 
-    //     ]); 
-    
-    //     return response()->json(['success' => true, 'message' => 'File uploaded to Botpress Knowledge Base!']); 
-
-      public function uploadFileChatbot(Request $request)
-        {
-            $file = $request->file('your_file_input');
-            $client = new Client();
-
-            $botId = 'f3056edf-16a8-4ca0-8a3a-2db9624cfeef';
-            $kbId  = 'kb-f3ce8a2429';
-            $pat   = 'bp_pat_yadf1pJGmkuYblc5Elt7Lvp3T3fUX5DVLHy0';
-
-            $fileName = $file->getClientOriginalName();
-            $fileSize = $file->getSize();
-
-            // Step 1: Register the file with Botpress and tag it to KB
-            $response = $client->request('PUT', 'https://api.botpress.cloud/v1/files', [
-                'headers' => [
-                    'x-bot-id'      => $botId,
-                    'Authorization' => 'Bearer ' . $pat,
-                    'Content-Type'  => 'application/json',
-                ],
-                'body' => json_encode([
-                    'key'   => 'kb-' . $kbId . '/' . $fileName, // mimic directory structure
-                    'size'  => $fileSize,
-                    'index' => true,
-                    'tags'  => [
-                        'source' => 'knowledge-base',
-                        'kbId'   => $kbId,
-                        'title'  => pathinfo($fileName, PATHINFO_FILENAME)
-                    ]
-                ]),
-            ]);
-
-            $result = json_decode($response->getBody(), true);
-            $uploadUrl = $result['file']['uploadUrl'];
-
-            // Step 2: Upload raw binary file content to signed URL
-            $client->request('PUT', $uploadUrl, [
-                'body' => file_get_contents($file->getPathname()),
-                'headers' => [
-                    'Content-Type' => 'application/octet-stream',
-                ],
-            ]);
-
-            // return response()->json([
-            //     'success'  => true,
-            //     'message'  => 'File uploaded and linked to Botpress Knowledge Base!',
-            //     'filename' => $fileName
-            // ]);
-             return back()->with('success', 'File uploaded successfully!');
-        }
 
     public function deleteFileChatbot($id)
     {
-        $botId = '31ec012b-3685-4b49-94a5-1072b83cd95f';
-        $pat   = 'bp_pat_q0E8SvtxmjQH2vb3VhzPt4CvPXNNK8bCGUB6';
-
-        $client = new \GuzzleHttp\Client();
         try {
-            $client->request('DELETE', "https://api.botpress.cloud/v1/files/{$id}", [
+            $this->client->request('DELETE', "https://api.botpress.cloud/v1/files/{$id}", [
                 'headers' => [
-                    'x-bot-id' => $botId,
-                    'Authorization' => 'Bearer ' . $pat,
+                    'x-bot-id' => $this->botId,
+                    'Authorization' => 'Bearer ' . $this->pat,
                 ]
             ]);
         } catch (\Exception $e) {

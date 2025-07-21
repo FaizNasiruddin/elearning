@@ -23,27 +23,21 @@
          @if(session('success'))
     <p class="alert alert-success">{{ session('success') }}</p>
 @endif
-       @php
-            use Illuminate\Support\Str;
+      @php
+    use Illuminate\Support\Str;
 
-            $kbId = 'kb-f3ce8a2429';
-            $allowedExtensions = ['.pdf', '.txt', '.xls', '.xlsx', '.doc','docx'];
+    $allowedExtensions = ['.pdf', '.txt', '.xls', '.xlsx', '.doc', '.docx'];
 
-            $uploadedFiles = collect($files)->filter(function ($file) use ($kbId, $allowedExtensions) {
-                if (!isset($file['tags']['kbId']) || $file['tags']['kbId'] !== $kbId) {
-                    return false;
-                }
-
-                $key = $file['key'];
-                foreach ($allowedExtensions as $ext) {
-                    if (Str::endsWith(strtolower($key), $ext)) {
-                        return true;
-                    }
-                }
-
-                return false;
-            });
-        @endphp
+    $uploadedFiles = collect($files)->filter(function ($file) use ($allowedExtensions) {
+        $key = strtolower($file['key']); // Normalize case
+        foreach ($allowedExtensions as $ext) {
+            if (Str::endsWith($key, $ext)) {
+                return true;
+            }
+        }
+        return false;
+    });
+@endphp
 
         @if($uploadedFiles->count())
             <table>
