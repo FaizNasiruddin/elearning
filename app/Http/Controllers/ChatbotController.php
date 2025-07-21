@@ -13,13 +13,15 @@ class ChatbotController extends Controller
 
     public function __construct()
     {
-        // $this->botId = '55708be4-1cf5-4261-b3b1-6b2f262335cb';
-        // $this->kbId  = 'kb-e6698ed6fb';
-        // $this->pat   = 'bp_pat_DhPOD9WA2RNlmeOaEA90jWSkZvFYMzebTtvJ';
+         // $this->botId = 'f3056edf-16a8-4ca0-8a3a-2db9624cfeef';
+        // $this->kbId  = 'kb-f3ce8a2429';
+        // $this->pat   = 'bp_pat_yadf1pJGmkuYblc5Elt7Lvp3T3fUX5DVLHy0';
 
-        $this->botId = 'f3056edf-16a8-4ca0-8a3a-2db9624cfeef';
-        $this->kbId  = 'kb-f3ce8a2429';
-        $this->pat   = 'bp_pat_yadf1pJGmkuYblc5Elt7Lvp3T3fUX5DVLHy0';
+        $this->botId = '55708be4-1cf5-4261-b3b1-6b2f262335cb';
+        $this->kbId  = 'kb-e6698ed6fb';
+        $this->pat   = 'bp_pat_DhPOD9WA2RNlmeOaEA90jWSkZvFYMzebTtvJ';
+
+      
         $this->client = new Client();
     }
 
