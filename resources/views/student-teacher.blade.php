@@ -41,6 +41,7 @@
         @foreach ($chatbots as $chatbot)
             <tr>
                 <td>{{ $chatbot->id }}</td>
+                <td>{{ $chatbot->name }}</td>
                 <td>{{ $chatbot->bot_id }}</td>
                 <td>{{ $chatbot->kb_id }}</td>
                 <td>{{ $chatbot->pat }}</td>
