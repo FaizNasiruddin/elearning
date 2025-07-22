@@ -15,9 +15,9 @@
         <form action="/updateTeacher" method="POST">
             @csrf
             <input type="hidden" name="teacher_id" value="{{ $teacher->id }}">
-            <input type="text" placeholder="Full Name" name="teacher_name" value="{{ $teacher->fullname }}">
-            <input type="text" placeholder="IC Number" name="teacher_username" value="{{ $teacher->username }}">
-            <input type="text" placeholder="Password" name="teacher_password" value="{{ $teacher->password }}">
+            <input type="text" placeholder="Enter Full Name" name="teacher_name" value="{{ $teacher->fullname }}">
+            <input type="text" placeholder="Enter IC Number" name="teacher_username" value="{{ $teacher->username }}">
+            <input type="text" placeholder="Enter Password" name="teacher_password" value="">
             <br>
             <button>Update Teacher</button>
         </form>

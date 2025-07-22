@@ -146,7 +146,7 @@ public function showAdminChatbot()
         // Activate the selected one
         Chatbot::where('id', $id)->update(['is_active' => true]);
 
-        return view('student-teacher', compact('chatbotScript'));
+        return view('student-teacher');
     }
 
     

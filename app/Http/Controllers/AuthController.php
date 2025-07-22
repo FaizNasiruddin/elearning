@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Students;
 use App\Models\Teachers;
+use App\Models\Admin;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -58,20 +60,23 @@ public function login(Request $request)
         'password' => 'required',
     ]);
 
+    // Check student login
     $student = Students::where('username', $request->username)->first();
-    if ($student && $student->password === $request->password) {
+    if ($student && Hash::check($request->password, $student->password)) {
         session(['user' => $student->id, 'role' => 'student']);
         return redirect('/student-subject');
     }
 
+    // Check teacher login
     $teacher = Teachers::where('username', $request->username)->first();
-    if ($teacher && $teacher->password === $request->password) {
+    if ($teacher && Hash::check($request->password, $teacher->password)) {
         session(['user' => $teacher->id, 'role' => 'teacher']);
         return redirect('/teacher-subject');
     }
 
     return redirect('/')->with('error', 'Invalid credentials.');
 }
+
 
 
 public function adminLogin(Request $request)
@@ -81,10 +86,13 @@ public function adminLogin(Request $request)
         'password' => 'required',
     ]);
 
-    // Hardcoded admin credentials
-    if ($request->username === 'admin' && $request->password === 'admin123') {
-        session(['user' => 'admin', 'role' => 'admin']);
-        return redirect('/admin-student'); // Change to your actual admin route
+    $admin = Admin::where('username', $request->username)
+                  ->where('password', $request->password) // Plain text password check
+                  ->first();
+
+    if ($admin) {
+        session(['user' => $admin->username, 'role' => 'admin']);
+        return redirect('/admin-student');
     }
 
     return redirect('/admin-login')->with('error', 'Invalid admin credentials.');

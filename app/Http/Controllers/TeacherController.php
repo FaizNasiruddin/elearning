@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Teachers;
 use App\Models\Subjects;
+use Illuminate\Support\Facades\Hash;
 
 
 use Illuminate\Http\Request;
@@ -15,7 +16,7 @@ use Illuminate\Http\Request;
         return redirect('/admin-login')->with('error', 'Access denied. Please login as admin.');
     }
 
-    // Step 1: Validate input (no unique rule)
+    // Step 1: Validate input
     $request->validate([
         'fullname' => ['required', 'string', 'regex:/^[^0-9]*$/'],
         'username' => 'required|digits:12',
@@ -36,11 +37,11 @@ use Illuminate\Http\Request;
             ->withInput();
     }
 
-    // Step 3: Insert new teacher
+    // Step 3: Insert new teacher with hashed password
     Teachers::create([
         'fullname' => $request->fullname,
         'username' => $request->username,
-        'password' => $request->password, // 🔒 hash if needed
+        'password' => Hash::make($request->password), // 🔐 hash the password
     ]);
 
     return redirect('/admin-teacher')->with('message', 'Teacher registered successfully!');
@@ -104,22 +105,17 @@ use Illuminate\Http\Request;
 
     public function updateTeacher(Request $request)
 {
-    if (!session()->has('user') || session('role') !== 'admin') {
-        return redirect('/admin-login')->with('error', 'Access denied. Please login as admin.');
-    }
-
     // Step 1: Validate input
     $request->validate([
-        'teacher_id' => 'required',
-        'teacher_name' => 'required|string|regex:/^[^0-9]*$/',
+        'teacher_id' => 'required|exists:teachers,id',
+        'teacher_name' => ['required', 'string', 'regex:/^[^0-9]*$/'],
         'teacher_username' => 'required|digits:12',
-        'teacher_password' => 'required',
+        'teacher_password' => 'nullable',  // password optional on update
     ], [
-        'teacher_name.regex' => 'The Teacher Name must not contain numbers.',
+        'teacher_name.regex' => 'The Full Name must not contain numbers.',
         'teacher_username.digits' => 'The IC number must be exactly 12 digits.',
     ], [
-        'teacher_id' => 'Teacher ID',
-        'teacher_name' => 'Teacher Name',
+        'teacher_name' => 'Full Name',
         'teacher_username' => 'IC Number',
         'teacher_password' => 'Password',
     ]);
@@ -135,19 +131,25 @@ use Illuminate\Http\Request;
             ->withInput();
     }
 
-    // Step 3: Update the teacher info
+    // Step 3: Find teacher and update
     $teacher = Teachers::find($request->teacher_id);
-    if ($teacher) {
-        $teacher->update([
-            'fullname' => $request->teacher_name,
-            'username' => $request->teacher_username,
-            'password' => $request->teacher_password, // consider Hash::make here
-        ]);
-
-        return redirect('/admin-teacher')->with('message', 'Teacher updated successfully!');
+    if (!$teacher) {
+        return redirect()->back()->with('error', 'Teacher not found.');
     }
 
-    return redirect()->back()->with('error', 'Teacher not found.');
+    $data = [
+        'fullname' => $request->teacher_name,
+        'username' => $request->teacher_username,
+    ];
+
+    // Only hash and update password if provided
+    if (!empty($request->teacher_password)) {
+        $data['password'] = Hash::make($request->teacher_password);
+    }
+
+    $teacher->update($data);
+
+    return redirect('/admin-teacher')->with('message', 'Teacher updated successfully!');
 }
 
    public function showTeacherAdd(){

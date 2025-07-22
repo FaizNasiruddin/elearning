@@ -7,12 +7,13 @@ use App\Models\Attendance;
 use App\Models\StudentQuizMark;
 use App\Models\Quizzes;
 use App\Models\Chatbot;
+use Illuminate\Support\Facades\Hash;
 
 use Illuminate\Http\Request;
 
 class StudentController extends Controller
 {
-    public function addStudent(Request $request)
+   public function addStudent(Request $request)
 {
     // Step 1: Validate input
     $request->validate([
@@ -37,10 +38,10 @@ class StudentController extends Controller
             ->withInput();
     }
 
-    // Step 3: Save new student
+    // Step 3: Save new student with hashed password
     Students::create([
         'username' => $request->username,
-        'password' => $request->password, // 🔒 consider bcrypt() or Hash::make()
+        'password' => Hash::make($request->password), // 🔐 Hash the password
         'fullname' => $request->fullname,
         'form' => $request->form,
     ]);
@@ -110,7 +111,7 @@ class StudentController extends Controller
         return view('/admin-student-edit' ,compact('student'));
     }
 
-    public function updateStudent(Request $request)
+   public function updateStudent(Request $request)
 {
     $request->validate([
         'student_id' => 'required',
@@ -128,7 +129,7 @@ class StudentController extends Controller
         'form' => 'Form',
     ]);
 
-    // Check for duplicate IC number (used by another student)
+    // Check for duplicate IC number
     $exists = Students::where('username', $request->username)
         ->where('id', '!=', $request->student_id)
         ->first();
@@ -144,7 +145,7 @@ class StudentController extends Controller
         $student->update([
             'fullname' => $request->fullname,
             'username' => $request->username,
-            'password' => $request->password, // 🔒 consider using Hash::make()
+            'password' => Hash::make($request->password), // 🔐 hash updated password
             'form' => $request->form,
         ]);
 

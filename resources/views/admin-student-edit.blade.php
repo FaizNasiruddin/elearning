@@ -14,13 +14,13 @@
     <p style="font-size:20px; color:gray">Update Student Account</p>
         <form action="/updateStudent" method="POST">
             @csrf
-            <input type="hidden" name="student_id" value="{{ $student->id }}">
+            <input type="hidden" name="student_id"  value="{{ $student->id }}">
             <br>
-            <input type="text" name="fullname" value="{{ $student->fullname }}">
+            <input type="text" name="fullname"  placeholder="Enter Full Name" value="{{ $student->fullname }}">
             <br>
-            <input type="text" name="username" value="{{ $student->username }}">
+            <input type="text" name="username"  placeholder="Enter IC Number" value="{{ $student->username }}">
             <br>
-            <input type="text" name="password" value="{{ $student->password }}">
+            <input type="text" name="password" placeholder="Enter Password" value="">
             <br>
             <select class="formInput" id="student" name="form">
                 <option value="1" {{ $student->form == 1 ? 'selected' : '' }}>Form 1</option>
