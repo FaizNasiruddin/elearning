@@ -45,6 +45,16 @@
                 <td>{{ $chatbot->kb_id }}</td>
                 <td>{{ $chatbot->pat }}</td>
                 <td>{{ $chatbot->is_active ? 'Yes' : 'No' }}</td>
+                <td>
+                    @if (!$chatbot->is_active)
+                        <form action="/activeChatbot/{{$chatbot->id}}" method="POST">
+                            @csrf
+                            <button type="submit">Set Active</button>
+                        </form>
+                    @else
+                        <strong>Active</strong>
+                    @endif
+                </td>
             </tr>
         @endforeach
     </tbody>
