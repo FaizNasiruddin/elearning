@@ -110,5 +110,4 @@ public function adminLogin(Request $request)
         // Default fallback
         return redirect('/')->with('success', 'Logged out successfully.');
     }
-
 }

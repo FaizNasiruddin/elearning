@@ -85,7 +85,8 @@ Route::post('/logout', [AuthController::class, 'logout']);
 Route::post('/uploadFileChatbot', [ChatbotController::class, 'uploadFileChatbot']);
 Route::post('/uploadURL',[ChatbotController::class, 'uploadURL']);
 Route::delete('/deleteKnowledgeBase/{id}', [ChatbotController::class, 'deleteFileChatbot']);
-
+Route::post('/chatbotsAdd', [ChatbotController::class, 'chatbotAdd']);
+Route::post('/activeChatbot/{id}', [ChatbotController::class, 'chatbotActive']);
 
 
 
