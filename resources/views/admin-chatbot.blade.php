@@ -40,7 +40,8 @@
 @endphp
 
         @if($uploadedFiles->count())
-            <table>
+        <div class="table-scroll">
+ <table>
                 <thead>
                     <tr>
                         <th>Filename</th>
@@ -68,6 +69,8 @@
                     @endforeach
                 </tbody>
             </table>
+        </div>
+           
         @else
             <p>No PDF, TXT, or Excel files uploaded.</p>
         @endif
