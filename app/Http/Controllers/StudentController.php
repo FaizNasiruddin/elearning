@@ -6,6 +6,7 @@ use App\Models\AttendanceRecord;
 use App\Models\Attendance;
 use App\Models\StudentQuizMark;
 use App\Models\Quizzes;
+use App\Models\Chatbot;
 
 use Illuminate\Http\Request;
 
@@ -202,5 +203,11 @@ class StudentController extends Controller
     $quizzes = Quizzes::with('subject')->get();
 
     return view('student-profile', compact('student', 'attendances', 'attendanceRecords', 'quizzes', 'quizMarks','subjects'));
+}
+
+    
+public function studentteacher() {
+    $chatbots = Chatbot::all(); // fetch all records
+    return view('student-teacher', ['chatbots' => $chatbots]);
 }
 }

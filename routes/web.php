@@ -54,6 +54,7 @@ Route::get('/teacher-student-attendance/{attendance_id}/{subject_id}', [ContentC
 Route::post('/adminLogin', [AuthController::class, 'adminLogin']);
 Route::get('/teacher-content', [ContentController::class, 'showteacherContent']);
 Route::get('/admin-chatbot', [ChatbotController::class, 'showAdminChatbot']);
+Route::get('/student-teacher', [StudentController::class, 'studentteacher']);
 Route::get('/test', [AuthController::class, 'test']);
 
 
