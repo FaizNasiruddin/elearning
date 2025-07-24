@@ -67,6 +67,7 @@
     <div class="table-scroll">
       <table>
         <tr>
+          <th>No</th>
           <th>Full Name</th>
           <th>IC Number</th>
           <th>Password</th>
@@ -76,6 +77,7 @@
         </tr>
         @foreach ($students as $student)
         <tr>
+           <td>{{ $loop->iteration }}</td>
           <td>{{ $student->fullname }}</td>
           <td>
             <span class="masked" data-value="{{ $student->username }}">•••••</span>

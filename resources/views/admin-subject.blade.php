@@ -69,6 +69,7 @@
 <div class="table-scroll">
      <table>
         <tr>
+            <th>No</th>
             <th>Name</th>
             <th>Form</th>
             <th>Teacher</th>
@@ -78,6 +79,7 @@
         </tr>
         @foreach ($subjects as $subject)
             <tr>
+                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $subject->name }}</td>
                 <td>{{ $subject->form }}</td>
                 <td>

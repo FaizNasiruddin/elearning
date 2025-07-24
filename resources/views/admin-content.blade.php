@@ -46,6 +46,7 @@
                  <table>
                 <thead>
                     <tr>
+                        <th>No</th>
                         <th>Subject</th>
                         <th>Created at</th>
                         <th>Start</th>
@@ -56,6 +57,7 @@
                 <tbody>
                     @forelse($attendances as $attendance)
                         <tr>
+                            <td>{{ $loop->iteration }}</td>
                             <td>{{ $attendance->subject->name ?? 'No Subject' }}</td>
                             <td>{{ \Carbon\Carbon::parse($attendance->created_at)->format('d M Y h:i A') }}</td>
                             <td>{{ \Carbon\Carbon::parse($attendance->start_time)->format('d M Y h:i A') }}</td>
@@ -88,6 +90,7 @@
                 <table>
                 <thead>
                     <tr>
+                        <th>No</th>
                         <th>Subject</th>
                         <th>Title</th>
                         <th>Created at</th>
@@ -99,6 +102,7 @@
                 <tbody>
                     @forelse($quizzes as $quiz)
                         <tr>
+                            <td>{{ $loop->iteration }}</td>
                             <td>{{ $quiz->subject->name ?? 'No Subject' }}</td>
                             <td>{{ $quiz->title }}</td>
                             <td>{{ \Carbon\Carbon::parse($quiz->created_at)->format('d M Y h:i A') }}</td>
