@@ -7,13 +7,12 @@ use App\Models\Attendance;
 use App\Models\StudentQuizMark;
 use App\Models\Quizzes;
 use App\Models\Chatbot;
-use Illuminate\Support\Facades\Hash;
 
 use Illuminate\Http\Request;
 
 class StudentController extends Controller
 {
-   public function addStudent(Request $request)
+public function addStudent(Request $request)
 {
     // Step 1: Validate input
     $request->validate([
@@ -38,10 +37,10 @@ class StudentController extends Controller
             ->withInput();
     }
 
-    // Step 3: Save new student with hashed password
+    // Step 3: Save new student with plain password
     Students::create([
         'username' => $request->username,
-        'password' => Hash::make($request->password), // 🔐 Hash the password
+        'password' => $request->password, // 🛑 Plain-text password
         'fullname' => $request->fullname,
         'form' => $request->form,
     ]);
@@ -111,7 +110,7 @@ class StudentController extends Controller
         return view('/admin-student-edit' ,compact('student'));
     }
 
-   public function updateStudent(Request $request)
+ public function updateStudent(Request $request)
 {
     $request->validate([
         'student_id' => 'required',
@@ -145,7 +144,7 @@ class StudentController extends Controller
         $student->update([
             'fullname' => $request->fullname,
             'username' => $request->username,
-            'password' => Hash::make($request->password), // 🔐 hash updated password
+            'password' => $request->password, // 🛑 Plain-text password
             'form' => $request->form,
         ]);
 

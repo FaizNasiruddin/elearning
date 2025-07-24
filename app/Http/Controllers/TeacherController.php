@@ -3,14 +3,13 @@
 namespace App\Http\Controllers;
 use App\Models\Teachers;
 use App\Models\Subjects;
-use Illuminate\Support\Facades\Hash;
 
 
 use Illuminate\Http\Request;
 
     class TeacherController extends Controller
     {
-       public function addTeacher(Request $request)
+   public function addTeacher(Request $request)
 {
     if (!session()->has('user') || session('role') !== 'admin') {
         return redirect('/admin-login')->with('error', 'Access denied. Please login as admin.');
@@ -37,15 +36,16 @@ use Illuminate\Http\Request;
             ->withInput();
     }
 
-    // Step 3: Insert new teacher with hashed password
+    // Step 3: Insert new teacher with plain password
     Teachers::create([
         'fullname' => $request->fullname,
         'username' => $request->username,
-        'password' => Hash::make($request->password), // 🔐 hash the password
+        'password' => $request->password, // 🛑 storing plain-text password
     ]);
 
     return redirect('/admin-teacher')->with('message', 'Teacher registered successfully!');
 }
+
 
 
     public function showTeacher(Request $request) {
@@ -103,7 +103,7 @@ use Illuminate\Http\Request;
         return view('/admin-teacher-edit' ,compact('teacher'));
     }
 
-    public function updateTeacher(Request $request)
+ public function updateTeacher(Request $request)
 {
     // Step 1: Validate input
     $request->validate([
@@ -142,9 +142,9 @@ use Illuminate\Http\Request;
         'username' => $request->teacher_username,
     ];
 
-    // Only hash and update password if provided
+    // Update password directly if provided (no hashing)
     if (!empty($request->teacher_password)) {
-        $data['password'] = Hash::make($request->teacher_password);
+        $data['password'] = $request->teacher_password; // 🛑 plain-text password
     }
 
     $teacher->update($data);

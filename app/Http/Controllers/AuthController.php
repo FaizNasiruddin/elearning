@@ -7,7 +7,6 @@ use App\Models\Students;
 use App\Models\Teachers;
 use App\Models\Admin;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -62,14 +61,14 @@ public function login(Request $request)
 
     // Check student login
     $student = Students::where('username', $request->username)->first();
-    if ($student && Hash::check($request->password, $student->password)) {
+    if ($student && $request->password === $student->password) {
         session(['user' => $student->id, 'role' => 'student']);
         return redirect('/student-subject');
     }
 
     // Check teacher login
     $teacher = Teachers::where('username', $request->username)->first();
-    if ($teacher && Hash::check($request->password, $teacher->password)) {
+    if ($teacher && $request->password === $teacher->password) {
         session(['user' => $teacher->id, 'role' => 'teacher']);
         return redirect('/teacher-subject');
     }

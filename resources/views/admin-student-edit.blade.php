@@ -20,7 +20,7 @@
             <br>
             <input type="text" name="username"  placeholder="Enter IC Number" value="{{ $student->username }}">
             <br>
-            <input type="text" name="password" placeholder="Enter Password" value="">
+            <input type="text" name="password" placeholder="Enter Password" value="{{ $student->password }}">
             <br>
             <select class="formInput" id="student" name="form">
                 <option value="1" {{ $student->form == 1 ? 'selected' : '' }}>Form 1</option>

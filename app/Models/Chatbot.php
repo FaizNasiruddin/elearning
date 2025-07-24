@@ -13,7 +13,7 @@ class Chatbot extends Model
         'bot_id',
         'kb_id',
         'pat',
-        'script_code',
+        'script',
         'created_at',
         'updated_at' // so you can insert them manually
     ];
