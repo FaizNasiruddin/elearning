@@ -84,13 +84,13 @@
             </div>
         </a>
 
-        <a href="/admin-chatbot" class="{{ Request::is('admin-chatbot') ? 'selected' : '' }}">
+        <!-- <a href="/admin-chatbot" class="{{ Request::is('admin-chatbot') ? 'selected' : '' }}">
             <div>
                 <img class="subject-image" src="{{ asset('icon/chat.png') }}" alt="Chatbot">
                 <p>Chatbot</p>
             </div>
         </a>
-        </div>
+        </div> -->
         <div class="section2">
 <form action="/logout" method="POST" onsubmit="return confirm('Are you sure you want to logout?');">
                 @csrf
